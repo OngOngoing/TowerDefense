@@ -11,7 +11,7 @@ var MazeNode = cc.Node.extend({
 		'#              $ $ #',
 		'#              $ $ #',
 		'#              $ $ #',
-		'               $ $  ',
+		'               $ $C ',
 		'#              $ $$#',
 		'#              $   #',
 		'#              $   #',
@@ -32,6 +32,12 @@ var MazeNode = cc.Node.extend({
 					t.setAnchorPoint( cc.p( 0, 0 ) );
 					t.setPosition( cc.p( c * 50, (this.HEIGHT - r - 1) * 50 ) );
 					this.addChild( t );
+				}
+				else if (this.MAP[ r ][ c ] == 'C' ) {
+					var creep = new Creep();
+					creep.setAnchorPoint( cc.p( 0, 0 ) );
+					creep.setPosition( cc.p( c * 50, (this.HEIGHT - r - 1) * 50 ) );
+					this.addChild( creep );
 				}
 			}
 		}

@@ -15,7 +15,8 @@
             'res/resource.js',
             'src/GameLayer.js',
             'src/MazeNode.js',
-            'src/Tower.js',     //add your own files in order here
+            'src/Tower.js',
+            'src/Creep.js',     //add your own files in order here
         ]
     };
 
