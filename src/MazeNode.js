@@ -6,16 +6,16 @@ var MazeNode = cc.Node.extend({
 		this.setAnchorPoint( cc.p( 0, 0 ) );
 		this.MAP = [
 		'####################',
-		'#                  #',
-		'#                  #',
-		'#                  #',
-		'#                  #',
-		'#                  #',
-		'                    ',
-		'#                  #',
-		'#                  #',
-		'#                  #',
-		'#                  #',
+		'#              $   #',
+		'#              $ $ #',
+		'#              $ $ #',
+		'#              $ $ #',
+		'#              $ $ #',
+		'               $ $  ',
+		'#              $ $$#',
+		'#              $   #',
+		'#              $   #',
+		'#              $   #',
 		'#                  #',
 		'####################'
 		];
@@ -26,6 +26,12 @@ var MazeNode = cc.Node.extend({
 					s.setAnchorPoint( cc.p( 0, 0 ) );
 					s.setPosition( cc.p( c * 50, (this.HEIGHT - r - 1) * 50 ) );
 					this.addChild( s );
+				}
+				else if (this.MAP[ r ][ c ] == '$' ) {
+					var t = new Tower();
+					t.setAnchorPoint( cc.p( 0, 0 ) );
+					t.setPosition( cc.p( c * 50, (this.HEIGHT - r - 1) * 50 ) );
+					this.addChild( t );
 				}
 			}
 		}

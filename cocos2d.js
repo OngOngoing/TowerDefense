@@ -14,7 +14,8 @@
         appFiles:[
             'res/resource.js',
             'src/GameLayer.js',
-            'src/MazeNode.js'     //add your own files in order here
+            'src/MazeNode.js',
+            'src/Tower.js',     //add your own files in order here
         ]
     };
 
