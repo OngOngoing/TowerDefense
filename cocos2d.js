@@ -17,7 +17,9 @@
             'src/GameLayer.js',
             'src/MazeNode.js',
             'src/Tower.js',
-            'src/Creep.js',     //add your own files in order here
+            'src/Creep.js',
+            'src/Selector.js',
+            'src/KeyboardControlLayer.js'     //add your own files in order here
         ]
     };
 

@@ -1,25 +1,63 @@
 var GameLayer = cc.LayerColor.extend({
+
+    color: new cc.Color4B(0, 0, 0, 255),
+    money: 0,
+
     init: function() {
-        this._super( new cc.Color4B( 50, 50, 50, 125 ) );
+        this._super(this.color, this.getStageSize().width);
+        //this._super( new cc.Color4B( 50, 50, 50, 125 ) );
+        //this._super( new cc.Color4B( 30, 30, 30, 100 ) );
         this.setPosition( new cc.Point( 0, 0 ) );
+
+
 
         this.maze = new MazeNode();
         this.maze.init();
         //this.maze.setPosition( cc.p( 0, 50 ) );
         this.addChild( this.maze );
 
+
+        this.selector = new Selector(this, this.maze);
+        this.selector.setPosition(this.maze.selectorPosition);
+        this.addChild(this.selector);
+
+
         this.createCreep();
+
+        this.createKeyboardControl();
 
         return true;
     },
+
+
+    getStageSize: function(){
+        return cc.Director.getInstance().getWinSize();
+    },
+
 
     creepList: [],
 
     createCreep: function(){
         this.creep = new Creep(this.maze);
-        this.creep.setPosition(this.maze.spawnerPosition.pop());
+        this.creep.setPosition(this.maze.spawnerPosition);
         this.addChild(this.creep);
         this.creepList.push(this.creep);
+    },
+
+    createKeyboardControl: function(){
+        this.kbd = new KeyboardControlLayer(this);
+        this.kbd.init();
+        this.addChild(this.kbd);
+    },
+
+    move: function(dir){
+        var map = {
+            up: Selector.DIR.UP,
+            down: Selector.DIR.DOWN,
+            left: Selector.DIR.LEFT,
+            right: Selector.DIR.RIGHT
+        };
+        this.selector.direction = map[dir];
     },
 });
 

@@ -6,7 +6,7 @@ var MazeNode = cc.Node.extend({
 	'#              $ $ #',
 	'#              $ $ #',
 	'#              $ $ #',
-	'X              $ $CS',
+	'X         U    $ $CS',
 	'#              $ $$#',
 	'#              $   #',
 	'#            $ $   #',
@@ -25,7 +25,8 @@ var MazeNode = cc.Node.extend({
 
 	towerPosition: null,
 	creepPosition: [],
-	spawnerPosition: [],
+	spawnerPosition: null,
+	selectorPosition: null,
 	tileSize: null,
 
 
@@ -62,7 +63,10 @@ var MazeNode = cc.Node.extend({
 					t.setAnchorPoint(0,0)
 					self.addChild(t);
 				}else if(item == "S"){
-					self.spawnerPosition.push(cc.p(x * size.width, y * size.height));
+					self.spawnerPosition = cc.p(x * size.width, y * size.height);
+					return;
+				}else if(item == "U"){
+					self.selectorPosition = cc.p(x * size.width, y * size.height);
 					return;
 				}else if(item == "X"){
 					self.basePosition = cc.p(x * size.width, y * size.height);
@@ -165,6 +169,45 @@ var MazeNode = cc.Node.extend({
 		console.log("---------------");
 	},
 
+
+	getBlockAt: function(p){
+		var block = this._getBlockAt(p);
+		return block ? block.blockType : null;
+	},
+
+	createAt: function(p){
+		var block = this._getBlockAt(p);
+		if(!block || block.blockType != "tower"){
+			return false;
+		}
+		this.addChild(block);
+		this.rebuildMazeState();
+		return true;
+	},
+
+	removeAt: function(p){
+		var block = this._getBlockAt(p);
+		if(!block || block.blockType != "tower"){
+			return false;
+		}
+		this.removeChild(block);
+		this.rebuildMazeState();
+		return true;
+	},
+
+	_getBlockAt: function(p){
+		var self = this;
+		var out;
+		this.getChildren().some(function(item){
+			var pos = item.getPosition();
+			if(item.blockType !== undefined && cc.pointEqualToPoint(pos, p)){
+				out = item;
+				return true;
+			}
+			return false;
+		});
+		return out;
+	},
 
 
 	toGridPos: function(p){
