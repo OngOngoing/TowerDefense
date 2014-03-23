@@ -12,6 +12,7 @@
         engineDir: '../../cocos2d/',
         //SingleEngineFile:'',
         appFiles:[
+            'EasyStar.js',
             'res/resource.js',
             'src/GameLayer.js',
             'src/MazeNode.js',
