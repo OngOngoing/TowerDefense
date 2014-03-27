@@ -1,17 +1,17 @@
-var MazeNode = cc.Node.extend({
+window.MazeNode = cc.Node.extend({
 	layout: [
 	'####################',
-	'#              $   #',
-	'#              $ $ #',
-	'#              $ $ #',
-	'#              $ $ #',
-	'#              $ $ #',
-	'X         U    $ $CS',
-	'#              $ $$#',
-	'#              $   #',
-	'#            $ $   #',
-	'#            $ $   #',
-	'#            $     #',
+	'#                  #',
+	'#                  #',
+	'#                  #',
+	'#                  #',
+	'#                  #',
+	'X         U        S',
+	'#                  #',
+	'#                  #',
+	'#                  #',
+	'#                  #',
+	'#                  #',
 	'####################',
 	'                    ',
 	],
@@ -22,8 +22,6 @@ var MazeNode = cc.Node.extend({
 	},
 
 
-
-	towerPosition: null,
 	creepPosition: [],
 	spawnerPosition: null,
 	selectorPosition: null,
@@ -41,7 +39,6 @@ var MazeNode = cc.Node.extend({
 		var size = cc.Sprite.create.apply(null, this.sprite.wall).getBoundingBox();
 		this.tileSize = size;
 		var self = this;
-
 		revLayout.forEach(function(line, y){
 			line.split("").forEach(function(item, x){
 
@@ -54,25 +51,15 @@ var MazeNode = cc.Node.extend({
 				var blockType = "wall";
 				if(item == "_"){
 					return;
-				}else if(item == "$"){
-					spriteName = "Tower";
-					blockType = "tower";
-					var t = new Tower();
-					self.towerPosition = cc.p(x * size.width, y * size.height);
-					t.setPosition(cc.p(x * size.width, y * size.height));
-					t.setAnchorPoint(0,0)
-					self.addChild(t);
 				}else if(item == "S"){
 					self.spawnerPosition = cc.p(x * size.width, y * size.height);
 					return;
 				}else if(item == "U"){
+					spriteName = "ground";
+					blockType = "ground";
 					self.selectorPosition = cc.p(x * size.width, y * size.height);
-					return;
 				}else if(item == "X"){
 					self.basePosition = cc.p(x * size.width, y * size.height);
-					return;
-				}else if(item == "C"){
-					self.creepPosition.push(cc.p(x * size.width, y * size.height));
 					return;
 				}else if(item == " "){
 					spriteName = "ground";
@@ -103,40 +90,9 @@ var MazeNode = cc.Node.extend({
 				sprite.setPosition(x * size.width, y * size.height);
 				self.addChild(sprite);
 			});
-});
-},
-
-/*
-	ctor: function() {
-		this._super();
-		this.WIDTH = 20;
-		this.HEIGHT = 13;
-		this.setAnchorPoint( cc.p( 0, 0 ) );
-		this.MAP = this.layout.slice(0) ;
-		for ( var r = 0; r < this.HEIGHT; r++ ) {
-			for ( var c = 0; c < this.WIDTH; c++ ) {
-				if ( this.MAP[ r ][ c ] == '#' ) {
-					var s = cc.Sprite.create( 'res/images/wall2.png' );
-					s.setAnchorPoint( cc.p( 0, 0 ) );
-					s.setPosition( cc.p( c * 50, (this.HEIGHT - r - 1) * 50 ) );
-					this.addChild( s );
-				}
-				else if (this.MAP[ r ][ c ] == '$' ) {
-					var t = new Tower();
-					t.setAnchorPoint( cc.p( 0, 0 ) );
-					t.setPosition( cc.p( c * 50, (this.HEIGHT - r - 1) * 50 ) );
-					this.addChild( t );
-				}
-				else if (this.MAP[ r ][ c ] == 'C' ) {
-					var creep = new Creep();
-					creep.setAnchorPoint( cc.p( 0, 0 ) );
-					creep.setPosition( cc.p( c * 50, (this.HEIGHT - r - 1) * 50 ) );
-					this.addChild( creep );
-				}
-			}
-		}
+		});  
 	},
-	*/
+
 	rebuildMazeState: function(){
 		var self = this;
 
@@ -169,7 +125,6 @@ var MazeNode = cc.Node.extend({
 		console.log("---------------");
 	},
 
-
 	getBlockAt: function(p){
 		var block = this._getBlockAt(p);
 		return block ? block.blockType : null;
@@ -177,10 +132,14 @@ var MazeNode = cc.Node.extend({
 
 	createAt: function(p){
 		var block = this._getBlockAt(p);
-		if(!block || block.blockType != "tower"){
+		if(!block || block.blockType != "ground"){
 			return false;
 		}
-		this.addChild(block);
+		block.blockType = "tower";
+		block.tower = new Tower();
+		block.tower.setPosition(p);
+		block.tower.setAnchorPoint(0,0);
+		this.addChild(block.tower);
 		this.rebuildMazeState();
 		return true;
 	},
@@ -190,7 +149,9 @@ var MazeNode = cc.Node.extend({
 		if(!block || block.blockType != "tower"){
 			return false;
 		}
-		this.removeChild(block);
+		block.blockType = "ground";
+		this.removeChild(block.tower);
+		block.tower = null;
 		this.rebuildMazeState();
 		return true;
 	},

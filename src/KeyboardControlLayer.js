@@ -16,7 +16,7 @@ window.KeyboardControlLayer = cc.Layer.extend({
 		this.map[cc.KEY.up] = "up";
 		this.map[cc.KEY.down] = "down";
 		this.map[cc.KEY.c] = "create";
-		this.map[cc.KEY.d] = "delete";
+		this.map[cc.KEY.d] = "del";
 		this.map[cc.KEY.u] = "upgrade";
 	},
 
@@ -27,7 +27,7 @@ window.KeyboardControlLayer = cc.Layer.extend({
 	onKeyDown: function(e){
 		if(this.map[e]){
 			this.main.move(this.map[e]);
-			if(this.map[e] == "create" || this.map[e] == "delete" || this.map[e] == "upgrade") {
+			if(this.map[e] == "create" || this.map[e] == "del" || this.map[e] == "upgrade") {
 				console.log(this.map[e]);
 			}
 		}

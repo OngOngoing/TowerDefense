@@ -55,7 +55,11 @@ var GameLayer = cc.LayerColor.extend({
             up: Selector.DIR.UP,
             down: Selector.DIR.DOWN,
             left: Selector.DIR.LEFT,
-            right: Selector.DIR.RIGHT
+            right: Selector.DIR.RIGHT,
+            create: Selector.CTRL.CREATE,
+            del: Selector.CTRL.DELETE,
+            upgrade: Selector.CTRL.UPGRADE,
+
         };
         this.selector.direction = map[dir];
     },

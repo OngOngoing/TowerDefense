@@ -31,7 +31,33 @@ window.Selector = cc.Sprite.extend({
 		}else if(this.direction == Selector.DIR.DOWN){
 			targetPos = cc.p(pos.x, pos.y - this.maze.tileSize.height);
 			this.direction = null;
+		
+
+		}else if(this.direction == Selector.CTRL.DELETE){
+			var blockType = this.maze.getBlockAt(targetPos);
+			if(blockType == "wall"){
+				return;
+			}else if(blockType == "tower"){
+				this.maze.removeAt(targetPos);
+			}
+			
+			this.direction = null;
+
+		
+
+		}else if(this.direction == Selector.CTRL.CREATE){
+			var blockType = this.maze.getBlockAt(targetPos);
+			if(blockType == "tower" || blockType == "wall"){
+				return;
+			}else if(blockType == "ground"){
+				console.log("ground");
+				this.maze.createAt(targetPos);
+			}
+			
+			this.direction = null;
+
 		}
+		
 		// wrap around
 		var rightSide = this.getStageSize().width - this.maze.tileSize.width;
 		var topSide = this.getStageSize().height - this.maze.tileSize.height;
@@ -48,7 +74,8 @@ window.Selector = cc.Sprite.extend({
 		this.setPosition(targetPos);
 		return;
 		if(!cc.pointEqualToPoint(pos, targetPos)){
-			/*var blockType = this.maze.getBlockAt(targetPos);
+			/*
+			var blockType = this.maze.getBlockAt(targetPos);
 			if(blockType == "block"){
 				return;
 			}else if(blockType == "collect"){
@@ -70,6 +97,9 @@ window.Selector.DIR = {
 	"LEFT": 1,
 	"RIGHT": 2,
 	"UP": 3,
+};
+
+window.Selector.CTRL = {
 	"CREATE": 10,
 	"DELETE": -1,
 	"UPGRADE": 11,
