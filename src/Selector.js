@@ -6,7 +6,7 @@ window.Selector = cc.Sprite.extend({
 
 	ctor: function(game, maze){
 		this._super();
-		this.initWithFile("res/images/wall.png");
+		this.initWithFile( s_Selector );
 		this.setAnchorPoint(0, 0);
 
 		this.game = game;

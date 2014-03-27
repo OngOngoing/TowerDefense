@@ -1,4 +1,4 @@
-var screenWidth = 1000;
+var screenWidth = 1050;
 var screenHeight = 750;
 
 var cocos2dApp = cc.Application.extend({

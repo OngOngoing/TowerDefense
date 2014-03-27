@@ -13,7 +13,7 @@
         //SingleEngineFile:'',
         appFiles:[
             'EasyStar.js',
-            'res/resource.js',
+            'src/resource.js',
             'src/GameLayer.js',
             'src/MazeNode.js',
             'src/Tower.js',
