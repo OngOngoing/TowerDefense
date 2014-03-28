@@ -17,7 +17,7 @@ var GameLayer = cc.LayerColor.extend({
         this.addChild( this.maze );
 
 
-        this.selector = new Selector(this, this.maze);
+        this.selector = new Selector(this);
         this.selector.setPosition(this.maze.selectorPosition);
         this.addChild(this.selector);
 
@@ -62,6 +62,7 @@ var GameLayer = cc.LayerColor.extend({
             create: Selector.CTRL.CREATE,
             del: Selector.CTRL.DELETE,
             upgrade: Selector.CTRL.UPGRADE,
+            show_range: Selector.CTRL.SHOW_RANGE,
 
         };
         this.selector.direction = map[dir];

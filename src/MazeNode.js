@@ -141,6 +141,7 @@ window.MazeNode = cc.Node.extend({
 		block.tower = Tower.createLow(this.game);
 		block.tower.setPosition(p);
 		block.tower.setAnchorPoint(0,0);
+		block.tower.isShowRange = false;
 		this.addChild(block.tower);
 		this.rebuildMazeState();
 		return true;

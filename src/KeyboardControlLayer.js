@@ -18,6 +18,7 @@ window.KeyboardControlLayer = cc.Layer.extend({
 		this.map[cc.KEY.c] = "create";
 		this.map[cc.KEY.d] = "del";
 		this.map[cc.KEY.u] = "upgrade";
+		this.map[cc.KEY.r] = "show_range";
 	},
 
 	init: function() {

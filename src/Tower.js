@@ -128,6 +128,7 @@ var Tower = cc.Layer.extend({
         if (value) {
             if (!this._sAttackRange) {
                 this._sAttackRange = cc.Sprite.create(s_AttackRange);
+                this._sAttackRange.setPosition(25,25);
                 this.addChild(this._sAttackRange, -1);
             }
 

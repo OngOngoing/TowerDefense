@@ -4,13 +4,17 @@
 
 window.Selector = cc.Sprite.extend({
 
-	ctor: function(game, maze){
+	game: null,
+	maze: null,
+	direction: null,
+
+	ctor: function(game){
 		this._super();
 		this.initWithFile( s_Selector );
 		this.setAnchorPoint(0, 0);
 
 		this.game = game;
-		this.maze = maze;
+		this.maze = game.maze;
 
 		this.direction = null;
 		this.scheduleUpdate();
@@ -33,6 +37,7 @@ window.Selector = cc.Sprite.extend({
 			this.direction = null;
 		
 
+		// REMOVE
 		}else if(this.direction == Selector.CTRL.DELETE){
 			var blockType = this.maze.getBlockAt(targetPos);
 			if(blockType == "wall"){
@@ -44,7 +49,7 @@ window.Selector = cc.Sprite.extend({
 			this.direction = null;
 
 		
-
+		//CREATE
 		}else if(this.direction == Selector.CTRL.CREATE){
 			var blockType = this.maze.getBlockAt(targetPos);
 			if(blockType == "tower" || blockType == "wall"){
@@ -55,6 +60,26 @@ window.Selector = cc.Sprite.extend({
 			}
 			
 			this.direction = null;
+
+
+		//TOGGLE to SHOW TOWER RANGE
+		}else if(this.direction == Selector.CTRL.SHOW_RANGE){
+			var block = this.maze._getBlockAt(targetPos);
+			if(block.blockType == "wall"){
+				return;
+			}else if(block.blockType == "tower"){
+				if(block.tower.isShowRange == false) {
+					block.tower.isShowRange = true;
+					block.tower.showRange(true);
+				}
+				else {
+					block.tower.isShowRange = false;
+					block.tower.showRange(false);
+				}
+			}
+			
+			this.direction = null;
+
 
 		}
 		
@@ -74,14 +99,6 @@ window.Selector = cc.Sprite.extend({
 		this.setPosition(targetPos);
 		return;
 		if(!cc.pointEqualToPoint(pos, targetPos)){
-			/*
-			var blockType = this.maze.getBlockAt(targetPos);
-			if(blockType == "block"){
-				return;
-			}else if(blockType == "collect"){
-				this.game.collectAt(targetPos);
-			}
-			*/
 			this.setPosition(targetPos);
 		}
 		
@@ -103,4 +120,5 @@ window.Selector.CTRL = {
 	"CREATE": 10,
 	"DELETE": -1,
 	"UPGRADE": 11,
+	"SHOW_RANGE": 99,
 };
