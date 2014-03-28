@@ -8,11 +8,10 @@ var Creep = cc.Sprite.extend({
 	_sBlood:null,
 	_sBloodBackground:null,
 	_sAttackedRange:null,
-	timeStep: 0.2,
+	timeStep: 0.3,
 	ctor: function(maze) {
 
 		this._super();
-		this.init(s_Creep[0]);
 		//this.initWithFile( s_Creep[0] );  
 
 
@@ -38,17 +37,23 @@ var Creep = cc.Sprite.extend({
         // blood
         var blood = cc.Sprite.create(s_Blood);
         var contentSize = blood.getContentSize();
-        //blood.setAnchorPoint(cc.p(0, 0.5));
-        blood.setAnchorPoint(cc.p(-1.05, -4.5));
+        blood.setAnchorPoint(cc.p(0, 0.5));
+        //blood.setAnchorPoint(cc.p(-1.05, -4.5));
         this._bloodNode.addChild(blood);
         var bloodBackground = cc.Sprite.create(s_BloodBackground);
         this._bloodNode.addChild(bloodBackground);
+
+        this._bloodNode.setAnchorPoint(0,0);
+
         bloodBackground.setAnchorPoint(cc.p(-0.42, -3));
         bloodBackground.setPosition(cc.p(0, 20));
 
-        blood.setPosition(cc.p(-contentSize.width / 2, 20));
+        //blood.setPosition(cc.p(-contentSize.width / 2, 20));
+        blood.setPosition(cc.p((-contentSize.width / 2)+25, 45));
         this.addChild(this._bloodNode);
         this._sBlood = blood;
+
+
         this._sBloodBackground = bloodBackground;
 
 
@@ -66,15 +71,6 @@ var Creep = cc.Sprite.extend({
 
     	var maze = this.maze.mazeState.slice(0);
 
-/*
-		for(var i=0; i < this.enemyList.length; i++){
-			if(this.enemyList[i] == this){
-				continue;
-			}
-			var pos = this.maze.toGridPos(this.enemyList[i].getPosition());
-			maze[pos.y][pos.x] = 2;
-		}
-		*/
 		this.pathFinder.setGrid(maze);
 
 		var basePos = this.maze.toGridPos(this.maze.basePosition);
@@ -99,7 +95,7 @@ var Creep = cc.Sprite.extend({
 
 	update: function(){
 		this.pathFinder.calculate();
-		this._bloodNode.setPosition(this._sprite.getPosition());
+		//this._bloodNode.setPosition(this._sprite.getPosition());
 	},
 
 
@@ -107,8 +103,14 @@ var Creep = cc.Sprite.extend({
         return this._sprite;
     },
     getPos:function () {
-        return this._sprite.getPosition();
+        //return this._sprite.getPosition();
+        return this.getPosition();
     },
+
+    getSpritePos: function () {
+        return cc.p(this.getPosition().x+25,this.getPosition().y+25);
+    },
+
     setBlood:function (maxBlood) {
         this._blood = maxBlood;
         this._maxBlood = maxBlood;
@@ -162,3 +164,15 @@ var Creep = cc.Sprite.extend({
 
 
 });
+
+
+Creep.create = function (maze, filename, maxBlood) {
+    var creep = new Creep(maze);
+    creep.init(filename);
+    creep.setBlood(maxBlood);
+    return creep;
+};
+
+Creep.createLv1 = function (maze) {
+    return Creep.create(maze,s_Creep[0], 200);
+};

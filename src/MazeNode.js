@@ -21,16 +21,18 @@ window.MazeNode = cc.Node.extend({
 		"wall": [s_Wall],
 	},
 
-
-	creepPosition: [],
+	game: null,
+	creepList: [],
 	spawnerPosition: null,
 	selectorPosition: null,
 	tileSize: null,
 
 
-	init: function() {
+	init: function(game) {
 		this.createLayout();
 		this.rebuildMazeState();
+		this.creepList = game.creepList;
+		this.game = game;
 	},
 
 	createLayout: function(){
@@ -136,7 +138,7 @@ window.MazeNode = cc.Node.extend({
 			return false;
 		}
 		block.blockType = "tower";
-		block.tower = new Tower();
+		block.tower = Tower.createLow(this.game);
 		block.tower.setPosition(p);
 		block.tower.setAnchorPoint(0,0);
 		this.addChild(block.tower);

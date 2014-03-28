@@ -12,7 +12,7 @@ var GameLayer = cc.LayerColor.extend({
 
 
         this.maze = new MazeNode();
-        this.maze.init();
+        this.maze.init(this);
         //this.maze.setPosition( cc.p( 0, 50 ) );
         this.addChild( this.maze );
 
@@ -38,10 +38,13 @@ var GameLayer = cc.LayerColor.extend({
     creepList: [],
 
     createCreep: function(){
-        this.creep = new Creep(this.maze);
-        this.creep.setPosition(this.maze.spawnerPosition);
-        this.addChild(this.creep);
-        this.creepList.push(this.creep);
+        var creep = Creep.createLv1(this.maze);
+        creep.setPosition(this.maze.spawnerPosition);
+        
+        this.addChild(creep);
+
+        this.creepList.push(creep);
+
     },
 
     createKeyboardControl: function(){
