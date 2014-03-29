@@ -19,6 +19,14 @@ var Tower = cc.Layer.extend({
     creepLayer: null,
     creepList:[],
 
+    tower:null,
+    cache: null,
+
+    isConstructed:null,
+
+    spriteName:null,
+
+    countInitiate:0,
 
     init:function (filename, ball, attackRange, speed, attack,game) {
         this._super();
@@ -26,6 +34,10 @@ var Tower = cc.Layer.extend({
         this.creepLayer = game.creepLayer;
         this.creepList = game.creepLayer.getChildren();
         this._gameLayer = game;
+
+        this.isConstructed = false;
+        this.spriteName = filename;
+
 
         this.bulletLayer = cc.Layer.create();
         this.bulletLayer.setPosition(cc.p(0, 0));
@@ -39,16 +51,13 @@ var Tower = cc.Layer.extend({
         // set attack range
         this.radius = this._attackRange = attackRange;
 
-        var tower = this._sprite = cc.Sprite.create(filename);
-        tower.setAnchorPoint(0, 0);
-        this.addChild(tower);
+        // Construct a tower // Creating sprite using spriteFrame
+        this.createAnimatedSprite(this.spriteName);
 
-        var size = tower.getTexture().getContentSize();
-        this._rect = cc.rect(0, 0, size.width, size.height);
 
         var ball = this._sBall = cc.Sprite.create(ball);
         ball.setPosition(cc.p(25, 25));
-        this.addChild(ball);
+        //this.addChild(ball);
 
         // ball action
         var move = cc.MoveBy.create(1.2, cc.p(0, 6));
@@ -56,10 +65,62 @@ var Tower = cc.Layer.extend({
         ball.runAction(cc.RepeatForever.create(
             cc.Sequence.create(move, moveBack)));
 
-
-        this.scheduleUpdate();
+            this.scheduleUpdate();
 
     },
+
+    createAnimatedSprite: function(filename) {
+
+        this.tower = this._sprite = cc.Sprite.createWithSpriteFrameName("id_00.png");
+
+        this.tower.setAnchorPoint(0, 0);
+        this.addChild(this.tower);
+
+        var size = this.tower.getTexture().getContentSize();
+        this._rect = cc.rect(0, 0, size.width, size.height);
+        
+        // init Constructing Action
+        var animFrames = [];
+        for (var i = 0; i < 21; i++) {
+            if(i < 10) {
+                var str = filename + "0" + i + ".png";
+            }
+            else {
+                var str = filename + i + ".png";
+            }
+            var cache = cc.SpriteFrameCache.getInstance();
+            var frame = cache.getSpriteFrame(str);
+            animFrames.push(frame);
+        }
+
+        var animation = cc.Animation.create(animFrames, 0.05);
+        this.tower.constructingAction = cc.Animate.create(animation);
+        this.tower.runAction(this.tower.constructingAction);
+
+
+    },
+
+    createActiveAnimation: function() {
+
+        // Tower's standing animation
+        animFrames = [];
+        for (var i = 21; i < 34; i++) {
+                var str = this.spriteName + i + ".png";
+
+                var cache = cc.SpriteFrameCache.getInstance();
+                var frame = cache.getSpriteFrame(str);
+                animFrames.push(frame);
+        }
+
+        var animation = cc.Animation.create(animFrames, 0.08);
+        this.tower.runningStandingAction = cc.RepeatForever.create(cc.Animate.create(animation));
+        this.tower.runAction(this.tower.runningStandingAction);
+        
+
+    },
+
+
+
     getPos:function () {
         return this.getPosition();
     },
@@ -111,7 +172,7 @@ var Tower = cc.Layer.extend({
             		cc.CallFunc.create(function () {
             			bullet.removeFromParent();
             		}, bullet)
-            		));
+            	));
             	creep.lostBlood(this._attack);
 
 
@@ -132,7 +193,7 @@ var Tower = cc.Layer.extend({
                 this._sAttackRange = cc.Sprite.create(s_AttackRange);
                 this._sAttackRange.setPosition(25,25);
                 this._sAttackRange.setOpacity(0);
-                this.addChild(this._sAttackRange, -1);
+                this.addChild(this._sAttackRange, +100);
             }
 
             var fadeIn = cc.FadeIn.create(0.2);
@@ -160,9 +221,15 @@ var Tower = cc.Layer.extend({
 
     update:function (dt) {
         list = this.creepList;
-        console.log(this.creepList.length);
-        for (var j = 0, jLen = list.length; j < jLen; j++) {
-        	this.checkAttack(list[j]);
+        if ( this.tower.constructingAction.isDone() && this.countInitiate == 0 ) {
+            this.isConstructed = true;
+            this.countInitiate =1;
+            this.createActiveAnimation();
+        }
+        else if( this.isConstructed ) {
+            for (var j = 0, jLen = list.length; j < jLen; j++) {
+        	   this.checkAttack(list[j]);
+            }
         }
     },
 });
@@ -176,7 +243,10 @@ Tower.create = function (filename, ball, speed, attack,game) {
 };
 
 Tower.createLow = function (game) {
-    var tower = Tower.create(s_Tower[0], s_TowerBall[0], 300, 20,game);
+    var cache = cc.SpriteFrameCache.getInstance();
+    cache.addSpriteFrames( "res/images/tower/disk.plist", "res/images/tower/disk.png" );
+    var spriteFrameNamePrefix = "id_";
+    var tower = Tower.create(spriteFrameNamePrefix, s_TowerBall[0], 300, 20,game);
     tower._isLow = true;
     return tower;
 };

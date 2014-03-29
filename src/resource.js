@@ -20,6 +20,11 @@ var s_Creep = [
     "res/images/Creep.png"
 ];
 
+var s_Disk = [
+    "res/images/tower/disk.plist",
+    "res/images/tower/disk.png",
+];
+
 var s_Tower = [
     "res/images/Tower.png",
     "res/images/Tower.png"
@@ -34,6 +39,7 @@ var s_Wall = "res/images/wall2.png";
 
 var s_Selector = "res/images/wall.png";
 
+
 var g_resources = [
     //image
 
@@ -47,6 +53,9 @@ var g_resources = [
     {src:s_Creep[1]},
     {src:s_Creep[2]},
 
+    {src:s_Disk[0]},
+    {src:s_Disk[1]},
+
     {src:s_Tower[0]},
     {src:s_Tower[1]},
 
@@ -54,6 +63,8 @@ var g_resources = [
     {src:s_TowerBall[1]},
 
     {src:s_Wall},
+
+    {src:s_Selector},
 
     //effect
     {src:s_AttackEffect_mp3},
