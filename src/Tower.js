@@ -125,21 +125,34 @@ var Tower = cc.Layer.extend({
         return (new Date()).valueOf();
     },
     showRange:function (value) {
+
         if (value) {
             if (!this._sAttackRange) {
                 this._sAttackRange = cc.Sprite.create(s_AttackRange);
                 this._sAttackRange.setPosition(25,25);
+                this._sAttackRange.setOpacity(0);
                 this.addChild(this._sAttackRange, -1);
             }
+
+            var fadeIn = cc.FadeIn.create(0.2);
 
             var sarRadii = this._sAttackRange.getContentSize().width / 2;
             var scale = this._attackRange / sarRadii;
             this._sAttackRange.setScale(scale);
+            this._sAttackRange.runAction(fadeIn);
 
         } else {
             if (this._sAttackRange) {
-                this._sAttackRange.removeFromParent();
-                this._sAttackRange = null;
+
+            	var fadeOut = cc.FadeOut.create(0.2);
+           		this._sAttackRange.runAction(cc.Sequence.create(
+                	fadeOut,
+                	cc.CallFunc.create(function () {
+                		//after faded out
+                    	this._sAttackRange.removeFromParent();
+                		this._sAttackRange = null;
+                	}, this)
+            	));
             }
         }
     },
