@@ -16,14 +16,15 @@ var Tower = cc.Layer.extend({
     bulletLayer:null,
     bullet:null,
 
+    creepLayer: null,
     creepList:[],
 
 
     init:function (filename, ball, attackRange, speed, attack,game) {
         this._super();
 
-
-        this.creepList = game.creepList;
+        this.creepLayer = game.creepLayer;
+        this.creepList = game.creepLayer.getChildren();
         this._gameLayer = game;
 
         this.bulletLayer = cc.Layer.create();
@@ -62,9 +63,9 @@ var Tower = cc.Layer.extend({
     getPos:function () {
         return this.getPosition();
     },
-    checkAttack:function (monster) {
-        if (!monster) {
-            // cc.log("monster not null");
+    checkAttack:function (creep) {
+        if (!creep) {
+            // cc.log("creep not null");
             return;
         }
 
@@ -77,23 +78,23 @@ var Tower = cc.Layer.extend({
 
         // check attack range
         var towerPosition = this.getPosition();
-        var monsterPosition = monster.getPos();
-        var tmDistance = cc.pDistance(towerPosition, monsterPosition);
+        var creepPosition = creep.getPos();
+        var tmDistance = cc.pDistance(towerPosition, creepPosition);
 
         // if further than attack range
-        if (tmDistance > this._attackRange + monster.getAttackedRange()) {
+        if (tmDistance > this._attackRange + creep.getAttackedRange()) {
             return;
         }
 
         // check state
-        if (monster.isDie()) {
+        if (creep.isDie()) {
             return;
         }
 
         this._preAttackTime = curTime;
-        this.attackMonster(monster);
+        this.attackCreep(creep);
     },
-    attackMonster:function (monster) {
+    attackCreep:function (creep) {
 
             if (this._isLow) {
             	var bullet = cc.Sprite.create(s_Bullet);
@@ -104,14 +105,14 @@ var Tower = cc.Layer.extend({
             	this._gameLayer.addChild(bullet);
 
 
-            	var move = cc.MoveTo.create(0.1, monster.getSpritePos());
+            	var move = cc.MoveTo.create(0.1, creep.getSpritePos());
             	bullet.runAction(cc.Sequence.create(
             		move,
             		cc.CallFunc.create(function () {
             			bullet.removeFromParent();
             		}, bullet)
             		));
-            	monster.lostBlood(this._attack);
+            	creep.lostBlood(this._attack);
 
 
             	//sound
@@ -159,8 +160,9 @@ var Tower = cc.Layer.extend({
 
     update:function (dt) {
         list = this.creepList;
+        console.log(this.creepList.length);
         for (var j = 0, jLen = list.length; j < jLen; j++) {
-        	this.checkAttack(list[0]);
+        	this.checkAttack(list[j]);
         }
     },
 });

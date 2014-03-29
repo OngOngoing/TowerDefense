@@ -88,7 +88,7 @@ var Creep = cc.Sprite.extend({
 				}else{
                     var movePath = self.maze.toGamePos(cc.p(path[1].x, path[1].y));
                     var move = cc.MoveTo.create(0.2, movePath);
-                    
+
                     self.runAction(move);
 					//self.setPosition(movePath);
 				}

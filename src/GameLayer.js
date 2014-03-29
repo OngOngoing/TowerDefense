@@ -3,6 +3,11 @@ var GameLayer = cc.LayerColor.extend({
     color: new cc.Color4B(0, 0, 0, 255),
     money: 0,
 
+
+    creepLayer: null,
+    creepList: [],
+
+
     init: function() {
         this._super(this.color, this.getStageSize().width);
         //this._super( new cc.Color4B( 50, 50, 50, 125 ) );
@@ -16,15 +21,20 @@ var GameLayer = cc.LayerColor.extend({
         //this.maze.setPosition( cc.p( 0, 50 ) );
         this.addChild( this.maze );
 
-
+        //create Selector
         this.selector = new Selector(this);
         this.selector.setPosition(this.maze.selectorPosition);
         this.addChild(this.selector);
 
+        //create creeps layer
+        this.creepLayer = cc.Layer.create();
+        this.addChild(this.creepLayer);
+        this.creepList = this.creepLayer.getChildren();
 
-        this.createCreep();
 
         this.createKeyboardControl();
+
+        this.schedule(this.autoAddCreep, 2);
 
         return true;
     },
@@ -35,16 +45,25 @@ var GameLayer = cc.LayerColor.extend({
     },
 
 
-    creepList: [],
+    createCreep: function(creepID){
 
-    createCreep: function(){
-        var creep = Creep.createLv1(this.maze);
+        var creep = creepID;
         creep.setPosition(this.maze.spawnerPosition);
-        
-        this.addChild(creep);
+        this.creepLayer.addChild(creep);
 
-        this.creepList.push(creep);
+    },
 
+    autoAddCreep: function() {
+        var value = Math.random() * 3;
+        if (value > 2)
+            this.createCreep(Creep.createLv1(this.maze));
+        else if (value > 1)
+            this.createCreep(Creep.createLv1(this.maze));
+        /*
+        else
+            this.createCreep(Creep.createLv1(this.maze));
+        }
+        */
     },
 
     createKeyboardControl: function(){
