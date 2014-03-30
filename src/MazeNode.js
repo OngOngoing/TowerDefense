@@ -149,11 +149,11 @@ window.MazeNode = cc.Node.extend({
 
 	removeAt: function(p){
 		var block = this._getBlockAt(p);
-		if(!block || block.blockType != "tower"){
+		if(!block || block.blockType != "tower" || block.tower == null){
 			return false;
 		}
 		block.blockType = "ground";
-		var fadeOut = cc.FadeOut.create(0.5);
+		var fadeOut = cc.FadeOut.create(0.2);
             block.tower.tower.runAction(cc.Sequence.create(
                 fadeOut,
                 cc.CallFunc.create(function () {
