@@ -16,8 +16,8 @@ var s_MonsterAcross_ogg = "res/Music/MonsterAcross.ogg";
 
 var s_Creep = [
     "res/images/Creep.png",
-    "res/images/Creep.png",
-    "res/images/Creep.png"
+    "res/images/Creep1.png",
+    "res/images/Creep2.png"
 ];
 
 var s_Disk = [

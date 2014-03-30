@@ -157,7 +157,8 @@ window.MazeNode = cc.Node.extend({
             block.tower.tower.runAction(cc.Sequence.create(
                 fadeOut,
                 cc.CallFunc.create(function () {
-                    this.removeChild(block.tower);
+                    this.removeChild(block.tower);					
+					block.tower.tower = null;
 					block.tower = null;
                 }, this)
         	));

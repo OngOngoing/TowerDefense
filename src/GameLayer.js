@@ -56,14 +56,13 @@ var GameLayer = cc.LayerColor.extend({
     autoAddCreep: function() {
         var value = Math.random() * 3;
         if (value > 2)
-            this.createCreep(Creep.createLv1(this.maze));
+            this.createCreep(Creep.createLv0(this.maze));
         else if (value > 1)
             this.createCreep(Creep.createLv1(this.maze));
-        /*
         else
-            this.createCreep(Creep.createLv1(this.maze));
-        }
-        */
+            this.createCreep(Creep.createLv2(this.maze));
+        
+        
     },
 
     createKeyboardControl: function(){
