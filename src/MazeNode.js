@@ -153,8 +153,14 @@ window.MazeNode = cc.Node.extend({
 			return false;
 		}
 		block.blockType = "ground";
-		this.removeChild(block.tower);
-		block.tower = null;
+		var fadeOut = cc.FadeOut.create(0.5);
+            block.tower.tower.runAction(cc.Sequence.create(
+                fadeOut,
+                cc.CallFunc.create(function () {
+                    this.removeChild(block.tower);
+					block.tower = null;
+                }, this)
+        	));
 		this.rebuildMazeState();
 		return true;
 	},

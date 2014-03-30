@@ -26,7 +26,6 @@ var Tower = cc.Layer.extend({
 
     spriteName:null,
 
-    countInitiate:0,
 
     init:function (filename, ball, attackRange, speed, attack,game) {
         this._super();
@@ -52,7 +51,7 @@ var Tower = cc.Layer.extend({
         this.radius = this._attackRange = attackRange;
 
         // Construct a tower // Creating sprite using spriteFrame
-        this.createAnimatedSprite(this.spriteName);
+        this.createAnimatedSprite();
 
 
         var ball = this._sBall = cc.Sprite.create(ball);
@@ -69,7 +68,7 @@ var Tower = cc.Layer.extend({
 
     },
 
-    createAnimatedSprite: function(filename) {
+    createAnimatedSprite: function() {
 
         this.tower = this._sprite = cc.Sprite.createWithSpriteFrameName("id_00.png");
 
@@ -83,10 +82,10 @@ var Tower = cc.Layer.extend({
         var animFrames = [];
         for (var i = 0; i < 21; i++) {
             if(i < 10) {
-                var str = filename + "0" + i + ".png";
+                var str = this.spriteName + "0" + i + ".png";
             }
             else {
-                var str = filename + i + ".png";
+                var str = this.spriteName + i + ".png";
             }
             var cache = cc.SpriteFrameCache.getInstance();
             var frame = cache.getSpriteFrame(str);
@@ -115,11 +114,20 @@ var Tower = cc.Layer.extend({
         var animation = cc.Animation.create(animFrames, 0.08);
         this.tower.runningStandingAction = cc.RepeatForever.create(cc.Animate.create(animation));
         this.tower.runAction(this.tower.runningStandingAction);
+/*
+        this.tower.runningStandingAction = cc.Animate.create(animation);
+        var isFinish = function() {
+            //this.tower.stopAllActions();
+            if ( this.isConstructed == false ) {
+                return;
+            }
+        };
+        var finish = cc.CallFunc.create(isFinish, this.tower);
+        var seq = cc.Sequence.create(this.tower.runningStandingAction, finish);
+        this.tower.runAction(seq);
         
-
+*/
     },
-
-
 
     getPos:function () {
         return this.getPosition();
@@ -220,13 +228,13 @@ var Tower = cc.Layer.extend({
     },
 
     update:function (dt) {
-        list = this.creepList;
-        if ( this.tower.constructingAction.isDone() && this.countInitiate == 0 ) {
+
+        if ( this.tower.constructingAction.isDone() && this.isConstructed == false ) {
             this.isConstructed = true;
-            this.countInitiate =1;
             this.createActiveAnimation();
         }
         else if( this.isConstructed ) {
+            list = this.creepList;
             for (var j = 0, jLen = list.length; j < jLen; j++) {
         	   this.checkAttack(list[j]);
             }
