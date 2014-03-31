@@ -41,6 +41,12 @@ window.MazeNode = cc.Node.extend({
 		var size = cc.Sprite.create.apply(null, this.sprite.wall).getBoundingBox();
 		this.tileSize = size;
 		var self = this;
+
+
+		//add spriteSheet
+		cc.SpriteFrameCache.getInstance().addSpriteFrames( s_CombWall[0], s_CombWall[1] );
+
+
 		revLayout.forEach(function(line, y){
 			line.split("").forEach(function(item, x){
 
@@ -66,6 +72,27 @@ window.MazeNode = cc.Node.extend({
 				}else if(item == " "){
 					spriteName = "ground";
 					blockType = "ground";
+				/*
+				}else if(item == "#" ) {
+					var animFrames = [];
+        			for (var i = 1; i <= 77; i++) {
+                		var str = "comb" + i + ".png";
+                		var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(str);
+                		animFrames.push(frame);
+        			}
+
+        			var animation = cc.Animation.create(animFrames, 0.08);
+
+        			var sprite = cc.Sprite.createWithSpriteFrameName("comb1.png");
+
+        			sprite.blockType = blockType;
+					sprite.setAnchorPoint(0,0);
+					sprite.setPosition(x * size.width, y * size.height);
+					self.addChild(sprite);
+        			sprite.runningStandingAction = cc.RepeatForever.create(cc.Animate.create(animation));
+        			sprite.runAction(sprite.runningStandingAction);
+        			return;
+        		*/
 				}else{
 					/*
 					// top
@@ -86,11 +113,14 @@ window.MazeNode = cc.Node.extend({
 					}
 					*/
 				}
+				//var sprite = cc.Sprite.createWithSpriteFrameName("comb1.png");
 				var sprite = cc.Sprite.create.apply(null, self.sprite[spriteName]);
 				sprite.blockType = blockType;
 				sprite.setAnchorPoint(0,0);
 				sprite.setPosition(x * size.width, y * size.height);
 				self.addChild(sprite);
+
+
 			});
 		});  
 	},
@@ -191,6 +221,26 @@ window.MazeNode = cc.Node.extend({
 
 	toGamePos: function(p){
 		return cc.p(p.x * this.tileSize.width, (this.layout.length - 1 - p.y)*this.tileSize.height);
+	},
+
+	createWallAnimation: function(sprite) {
+		var cache = cc.SpriteFrameCache.getInstance();
+    	cache.addSpriteFrames( s_Wall[0], s_Wall[1] );
+
+    	var animFrames = [];
+        for (var i = 1; i <= 77; i++) {
+                var str = "comb" + i + ".png";
+
+                var cache = cc.SpriteFrameCache.getInstance();
+                var frame = cache.getSpriteFrame(str);
+                animFrames.push(frame);
+        }
+
+        var animation = cc.Animation.create(animFrames, 0.08);
+
+
+        sprite.runningStandingAction = cc.RepeatForever.create(cc.Animate.create(animation));
+        sprite.runAction(sprite.runningStandingAction);
 	},
 
 

@@ -25,6 +25,11 @@ var s_Disk = [
     "res/images/tower/disk.png",
 ];
 
+var s_Android = [
+    "res/images/android/android.plist",
+    "res/images/android/android.png",
+];
+
 var s_Tower = [
     "res/images/Tower.png",
     "res/images/Tower.png"
@@ -33,6 +38,11 @@ var s_Tower = [
 var s_TowerBall = [
     "res/images/Tower-ball-1.png",
     "res/images/Tower-ball-2.png"
+];
+
+var s_CombWall = [
+    "res/images/comb/comb.plist",
+    "res/images/comb/comb.png",
 ];
 
 var s_Wall = "res/images/wall2.png";
@@ -55,6 +65,13 @@ var g_resources = [
 
     {src:s_Disk[0]},
     {src:s_Disk[1]},
+
+    {src:s_Android[0]},
+    {src:s_Android[1]},
+
+
+    {src:s_CombWall[0]},
+    {src:s_CombWall[1]},
 
     {src:s_Tower[0]},
     {src:s_Tower[1]},

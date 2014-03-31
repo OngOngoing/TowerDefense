@@ -24,10 +24,10 @@ var Tower = cc.Layer.extend({
 
     isConstructed:null,
 
-    spriteName:null,
+    spriteID:[],
 
 
-    init:function (filename, ball, attackRange, speed, attack,game) {
+    init:function (spriteID, ball, attackRange, speed, attack,game) {
         this._super();
 
         this.creepLayer = game.creepLayer;
@@ -35,7 +35,7 @@ var Tower = cc.Layer.extend({
         this._gameLayer = game;
 
         this.isConstructed = false;
-        this.spriteName = filename;
+        this.spriteID = spriteID;
 
 
         this.bulletLayer = cc.Layer.create();
@@ -70,7 +70,7 @@ var Tower = cc.Layer.extend({
 
     createAnimatedSprite: function() {
 
-        this.tower = this._sprite = cc.Sprite.createWithSpriteFrameName("id_00.png");
+        this.tower = this._sprite = cc.Sprite.createWithSpriteFrameName(this.spriteID[0] + "1.png");
 
         this.tower.setAnchorPoint(0, 0);
         this.addChild(this.tower);
@@ -80,19 +80,14 @@ var Tower = cc.Layer.extend({
         
         // init Constructing Action
         var animFrames = [];
-        for (var i = 0; i < 21; i++) {
-            if(i < 10) {
-                var str = this.spriteName + "0" + i + ".png";
-            }
-            else {
-                var str = this.spriteName + i + ".png";
-            }
+        for (var i = 1; i <= this.spriteID[1]; i++) {
+            var str = this.spriteID[0] + i + ".png";
             var cache = cc.SpriteFrameCache.getInstance();
             var frame = cache.getSpriteFrame(str);
             animFrames.push(frame);
         }
 
-        var animation = cc.Animation.create(animFrames, 0.05);
+        var animation = cc.Animation.create(animFrames, this.spriteID[3]);
         this.tower.constructingAction = cc.Animate.create(animation);
         this.tower.runAction(this.tower.constructingAction);
 
@@ -103,15 +98,15 @@ var Tower = cc.Layer.extend({
 
         // Tower's standing animation
         animFrames = [];
-        for (var i = 21; i < 34; i++) {
-                var str = this.spriteName + i + ".png";
+        for (var i = this.spriteID[1] +1; i <= this.spriteID[2]; i++) {
+                var str = this.spriteID[0] + i + ".png";
 
                 var cache = cc.SpriteFrameCache.getInstance();
                 var frame = cache.getSpriteFrame(str);
                 animFrames.push(frame);
         }
 
-        var animation = cc.Animation.create(animFrames, 0.08);
+        var animation = cc.Animation.create(animFrames, this.spriteID[4]);
         this.tower.runningStandingAction = cc.RepeatForever.create(cc.Animate.create(animation));
         this.tower.runAction(this.tower.runningStandingAction);
 /*
@@ -244,17 +239,56 @@ var Tower = cc.Layer.extend({
 
 
 
-Tower.create = function (filename, ball, speed, attack,game) {
+Tower.create = function (spriteValue, ball, speed, attack,game) {
     var tower = new Tower();
-    tower.init(filename, ball, 200, speed, attack,game);
+    tower.init(spriteValue, ball, 200, speed, attack,game);
     return tower;
 };
 
 Tower.createLow = function (game) {
     var cache = cc.SpriteFrameCache.getInstance();
-    cache.addSpriteFrames( "res/images/tower/disk.plist", "res/images/tower/disk.png" );
-    var spriteFrameNamePrefix = "id_";
-    var tower = Tower.create(spriteFrameNamePrefix, s_TowerBall[0], 300, 20,game);
+    cache.addSpriteFrames( s_Disk[0], s_Disk[1] );
+    var spriteValue = [];
+    
+    // NAME TAG SPRITE
+    spriteValue.push("disk");
+
+    // Constructing SPRITE END
+    spriteValue.push(21);
+
+    // Active SPRITE END
+    spriteValue.push(34);
+
+    // Constructing time
+    spriteValue.push(0.05);
+
+    // Active animation time rate
+    spriteValue.push(0.08);
+
+    var tower = Tower.create(spriteValue, s_TowerBall[0], 300, 20,game);
+    tower._isLow = true;
+    return tower;
+};
+
+Tower.createFreeze = function (game) {
+    var cache = cc.SpriteFrameCache.getInstance();
+    cache.addSpriteFrames( s_Android[0], s_Android[1] );
+    var spriteValue = [];
+    // NAME TAG SPRITE
+    spriteValue.push("android");
+
+    // Constructing SPRITE END
+    spriteValue.push(10);
+
+    // Active SPRITE END
+    spriteValue.push(83);
+
+    // Constructing time
+    spriteValue.push(0.04);
+
+    // Active animation time rate
+    spriteValue.push(0.025);
+    var tower = Tower.create(spriteValue, s_TowerBall[0], 300, 20,game);
     tower._isLow = true;
     return tower;
 };
