@@ -3,7 +3,7 @@ var s_Blood = "res/images/Blood.png";
 var s_BloodBackground = "res/images/BloodBackground.png";
 var s_Bullet = "res/images/Shell.png";
 var s_HighBullet = "res/images/HighShell.png";
-var s_AttackRange = "res/images/AttackRange.png";
+var s_AttackRange = "res/images/range.png";
 
 var s_AttackEffect_mp3 = "res/Music/AttackEffect.mp3";
 var s_AttackEffect_ogg = "res/Music/AttackEffect.ogg";
@@ -45,7 +45,7 @@ var s_CombWall = [
     "res/images/comb/comb.png",
 ];
 
-var s_Wall = "res/images/wall2.png";
+var s_Wall = "res/images/mc.png";
 
 var s_Selector = "res/images/wall.png";
 
