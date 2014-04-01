@@ -56,15 +56,16 @@ var Tower = cc.Layer.extend({
 
         var ball = this._sBall = cc.Sprite.create(ball);
         ball.setPosition(cc.p(25, 25));
-        //this.addChild(ball);
+        this.addChild(ball);
 
         // ball action
+        /*
         var move = cc.MoveBy.create(1.2, cc.p(0, 6));
         var moveBack = move.reverse();
         ball.runAction(cc.RepeatForever.create(
             cc.Sequence.create(move, moveBack)));
-
-            this.scheduleUpdate();
+        */
+        this.scheduleUpdate();
 
     },
 
@@ -223,6 +224,7 @@ var Tower = cc.Layer.extend({
     },
 
     update:function (dt) {
+        this._sBall.setRotation(this._sBall.getRotation()+10);
 
         if ( this.tower.constructingAction.isDone() && this.isConstructed == false ) {
             this.isConstructed = true;

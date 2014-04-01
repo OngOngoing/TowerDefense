@@ -184,14 +184,16 @@ window.MazeNode = cc.Node.extend({
 		}
 		block.blockType = "ground";
 		var fadeOut = cc.FadeOut.create(0.2);
-            block.tower.tower.runAction(cc.Sequence.create(
-                fadeOut,
-                cc.CallFunc.create(function () {
-                    this.removeChild(block.tower);					
-					block.tower.tower = null;
-					block.tower = null;
-                }, this)
-        	));
+
+		block.tower._sBall.runAction(cc.FadeOut.create(0.3));
+        block.tower.tower.runAction(cc.Sequence.create(
+            fadeOut,
+            cc.CallFunc.create(function () {
+                this.removeChild(block.tower);					
+				block.tower.tower = null;
+				block.tower = null;
+            }, this)
+        ));
 		this.rebuildMazeState();
 		return true;
 	},
