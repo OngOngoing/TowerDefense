@@ -53,13 +53,19 @@ var Tower = cc.Layer.extend({
         // Construct a tower // Creating sprite using spriteFrame
         this.createAnimatedSprite();
 
-
+        
         var ball = this._sBall = cc.Sprite.create(ball);
         ball.setPosition(cc.p(25, 25));
+        ball.setOpacity(0);
         this.addChild(ball);
 
-        // ball action
+        this._sBall.runAction(cc.FadeIn.create(1.8));
+
+
+
         /*
+        // ball action
+        
         var move = cc.MoveBy.create(1.2, cc.p(0, 6));
         var moveBack = move.reverse();
         ball.runAction(cc.RepeatForever.create(
@@ -91,6 +97,9 @@ var Tower = cc.Layer.extend({
         var animation = cc.Animation.create(animFrames, this.spriteID[3]);
         this.tower.constructingAction = cc.Animate.create(animation);
         this.tower.runAction(this.tower.constructingAction);
+
+
+
 
 
     },
