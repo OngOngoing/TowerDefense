@@ -155,6 +155,10 @@ window.MazeNode = cc.Node.extend({
 			console.log(l.join(""));
 		});
 		console.log("---------------");
+
+		if(this.game){
+			this.game.rebuildCreepPathing();
+		}
 	},
 
 	getBlockAt: function(p){
