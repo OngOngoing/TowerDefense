@@ -276,6 +276,7 @@ Tower.createLow = function (game) {
     // Active animation time rate
     spriteValue.push(0.08);
 
+    // Tower Construction : SpriteValue, ballSprite, Speed, Attack, GAME
     var tower = Tower.create(spriteValue, s_TowerBall[0], 300, 20,game);
     tower._isLow = true;
     return tower;

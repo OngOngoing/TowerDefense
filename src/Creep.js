@@ -58,47 +58,39 @@ var Creep = cc.Sprite.extend({
 
 
 
-		this.pathFinder = new EasyStar.js();
-		this.pathFinder.setAcceptableTiles([0]);
+		this.pathFinder = new PF.AStarFinder();
 		//this.pathFinder.setTileCost(2, 2);
 
 		this.schedule(this.updateMove, this.timeStep, Infinity, 0);
-		this.scheduleUpdate();
     },
 
     updateMove: function(){
     	var self = this;
 
     	var maze = this.maze.mazeState.slice(0);
-
-		this.pathFinder.setGrid(maze);
+        var grid = new PF.Grid(maze[0].length,maze.length, maze);
 
 		var basePos = this.maze.toGridPos(this.maze.basePosition);
 		var pos = this.maze.toGridPos(this.getPosition());
 
-		this.pathFinder.findPath(
-			pos.x, pos.y, basePos.x, basePos.y,
-			function(path){
-				if(path === null){
-					console.log("STUCKED")
-					return;
-				}else if(path.length < 2){
-					console.log("Destination Reached!")
-					return;
-				}else{
-                    var movePath = self.maze.toGamePos(cc.p(path[1].x, path[1].y));
-                    var move = cc.MoveTo.create(0.2, movePath);
+        var path = this.pathFinder.findPath(pos.x,pos.y,basePos.x,basePos.y,grid);
+        if(path === null){
+            console.log("STUCKED")
+            return;
+        }else if(path.length < 2){
+            console.log("Destination Reached!")
+            return;
+        }else{
+            var movePath = self.maze.toGamePos(cc.p(path[1][0], path[1][1]));
+            var move = cc.MoveTo.create(0.2, movePath);
 
-                    self.runAction(move);
-					//self.setPosition(movePath);
-				}
-			}
-			);
+            self.runAction(move);
+        }
 	},
 
 
 	update: function(){
-		this.pathFinder.calculate();
+		
 		//this._bloodNode.setPosition(this._sprite.getPosition());
 	},
 
