@@ -96,7 +96,11 @@ window.Selector = cc.Sprite.extend({
 		}else if(targetPos.y > topSide){
 			targetPos.y = 0;
 		}
-		this.setPosition(targetPos);
+		//this.setPosition(targetPos);
+
+		this.MoveAction = cc.MoveTo.create(0.05, targetPos);
+		this.runAction(this.MoveAction);
+
 		return;
 		if(!cc.pointEqualToPoint(pos, targetPos)){
 			this.setPosition(targetPos);

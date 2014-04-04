@@ -1,5 +1,5 @@
 
-var s_Blood = "res/images/Blood.png";
+var s_Blood = "res/images/Bloodred.png";
 var s_BloodBackground = "res/images/BloodBackground.png";
 var s_Bullet = "res/images/Shell.png";
 var s_HighBullet = "res/images/HighShell.png";
@@ -47,7 +47,7 @@ var s_CombWall = [
 
 var s_Wall = "res/images/mc.png";
 
-var s_Selector = "res/images/wall.png";
+var s_Selector = "res/images/Selector.png";
 
 
 var g_resources = [

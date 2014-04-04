@@ -8,7 +8,7 @@ var Creep = cc.Sprite.extend({
 	_sBlood:null,
 	_sBloodBackground:null,
 	_sAttackedRange:null,
-	timeStep: 0.3,
+	timeStep: 0.4,
 	ctor: function(maze) {
 
 		this._super();
@@ -68,16 +68,27 @@ var Creep = cc.Sprite.extend({
     	if(!this.path){
             this.findPath();
         }
+
         var path = this.path.shift();
+        var pos = this.maze.toGridPos(this.getPosition());
+        var basePos = this.maze.toGridPos(this.maze.basePosition);
         if(!path){
+            if(pos.x == basePos.x && pos.y == basePos.y) {
+                console.log("Destination Reached!");
+            }
+            else {
+                console.log("Destination not found!");
+            }
             return;
         }
 
-        var pos = this.maze.toGridPos(this.getPosition());
+        //var pos = this.maze.toGridPos(this.getPosition());
         var movePath = this.maze.toGamePos(cc.p(path[0], path[1]));
         var moveDistance = Math.sqrt(Math.pow(pos.x - path[0], 2) + Math.pow(pos.y - path[1], 2));
-        this.moveAction = cc.MoveTo.create(0.2 * moveDistance, movePath);
+        this.moveAction = cc.MoveTo.create(this.timeStep, movePath);
 
+
+        this.stopAllActions();
         this.runAction(this.moveAction);
 	},
 
