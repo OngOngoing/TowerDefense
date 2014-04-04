@@ -40,7 +40,7 @@ window.Selector = cc.Sprite.extend({
 		// REMOVE
 		}else if(this.direction == Selector.CTRL.DELETE){
 			var blockType = this.maze.getBlockAt(targetPos);
-			if(blockType == "wall"){
+			if(blockType == "wall" || !blockType){
 				return;
 			}else if(blockType == "tower"){
 				this.maze.removeAt(targetPos);
@@ -52,7 +52,7 @@ window.Selector = cc.Sprite.extend({
 		//CREATE
 		}else if(this.direction == Selector.CTRL.CREATE){
 			var blockType = this.maze.getBlockAt(targetPos);
-			if(blockType == "tower" || blockType == "wall"){
+			if(blockType == "tower" || blockType == "wall" || !blockType){
 				return;
 			}else if(blockType == "ground"){
 				console.log("ground");
@@ -63,9 +63,9 @@ window.Selector = cc.Sprite.extend({
 
 
 		//TOGGLE to SHOW TOWER RANGE
-		}else if(this.direction == Selector.CTRL.SHOW_RANGE){
+		}else if(this.direction == Selector.CTRL.SHOW_RANGE ){
 			var block = this.maze._getBlockAt(targetPos);
-			if(block.blockType == "wall"){
+			if(block == undefined || block.blockType == "wall" || !block.blockType){
 				return;
 			}else if(block.blockType == "tower"){
 				if(block.tower.isShowRange == false) {
