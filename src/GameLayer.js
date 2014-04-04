@@ -85,6 +85,12 @@ var GameLayer = cc.LayerColor.extend({
         };
         this.selector.direction = map[dir];
     },
+
+    rebuildCreepPathing: function(){
+        for(var i=0; i<this.creepList.length; i++){
+            this.creepList[i].findPath();
+        }
+    }
 });
 
 var StartScene = cc.Scene.extend({

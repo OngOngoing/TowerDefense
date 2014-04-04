@@ -61,37 +61,44 @@ var Creep = cc.Sprite.extend({
 		this.pathFinder = new PF.AStarFinder();
 		//this.pathFinder.setTileCost(2, 2);
 
-		this.schedule(this.updateMove, this.timeStep, Infinity, 0);
+        this.scheduleUpdate();
     },
 
     updateMove: function(){
-    	var self = this;
+    	if(!this.path){
+            this.findPath();
+        }
+        var path = this.path.shift();
+        if(!path){
+            return;
+        }
 
-    	var maze = this.maze.mazeState.slice(0);
+        var pos = this.maze.toGridPos(this.getPosition());
+        var movePath = this.maze.toGamePos(cc.p(path[0], path[1]));
+        var moveDistance = Math.sqrt(Math.pow(pos.x - path[0], 2) + Math.pow(pos.y - path[1], 2));
+        this.moveAction = cc.MoveTo.create(0.2 * moveDistance, movePath);
+
+        this.runAction(this.moveAction);
+	},
+
+    findPath: function(){
+        var maze = this.maze.mazeState.slice(0);
         var grid = new PF.Grid(maze[0].length,maze.length, maze);
 
-		var basePos = this.maze.toGridPos(this.maze.basePosition);
-		var pos = this.maze.toGridPos(this.getPosition());
+        var basePos = this.maze.toGridPos(this.maze.basePosition);
+        var pos = this.maze.toGridPos(this.getPosition());
 
-        var path = this.pathFinder.findPath(pos.x,pos.y,basePos.x,basePos.y,grid);
-        if(path === null){
-            console.log("STUCKED")
-            return;
-        }else if(path.length < 2){
-            console.log("Destination Reached!")
-            return;
-        }else{
-            var movePath = self.maze.toGamePos(cc.p(path[1][0], path[1][1]));
-            var move = cc.MoveTo.create(0.2, movePath);
+        this.path = this.pathFinder.findPath(Math.max(0, pos.x), pos.y,basePos.x,basePos.y,grid);
+        this.path.shift();
 
-            self.runAction(move);
-        }
-	},
+        return this.path;
+    },
 
 
 	update: function(){
-		
-		//this._bloodNode.setPosition(this._sprite.getPosition());
+		if(!this.moveAction || this.moveAction.isDone()){
+            this.updateMove();
+        }
 	},
 
 
