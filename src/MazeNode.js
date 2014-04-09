@@ -172,7 +172,7 @@ window.MazeNode = cc.Node.extend({
 			return false;
 		}
 		block.blockType = "tower";
-		block.tower = Tower.createLow(this.game);
+		block.tower = Tower.createFreeze(this.game);
 		block.tower.setPosition(p);
 		block.tower.setAnchorPoint(0,0);
 		block.tower.isShowRange = false;
