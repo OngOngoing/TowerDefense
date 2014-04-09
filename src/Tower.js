@@ -89,6 +89,7 @@ HighBullet.create = function (attack,creepList) {
 var Tower = cc.Layer.extend({
     _gameLayer:null,
     _isLow:false,
+    _bulletType:null,
 
     _speed:null,
     _attack:null,
@@ -107,7 +108,6 @@ var Tower = cc.Layer.extend({
     creepList:[],
 
     tower:null,
-    cache: null,
 
     isConstructed:null,
 
@@ -145,7 +145,6 @@ var Tower = cc.Layer.extend({
         ball.setOpacity(0);
         this.addChild(ball);
 
-        this._sBall.runAction(cc.FadeIn.create(1.8));
 
 
 
@@ -183,9 +182,6 @@ var Tower = cc.Layer.extend({
         var animation = cc.Animation.create(animFrames, this.spriteID[3]);
         this.tower.constructingAction = cc.Animate.create(animation);
         this.tower.runAction(this.tower.constructingAction);
-
-
-
 
 
     },
@@ -243,60 +239,68 @@ var Tower = cc.Layer.extend({
     },
     attackCreep:function (creep) {
 
-        if (!this._isLow) {
-            var highBullet = HighBullet.create(this._attack,this.creepList);
-            highBullet.getSprite().setPosition(
-                cc.pAdd(this.getPosition(),
-                    this._sBall.getPosition()));
-
-            highBullet.checkAttack(creep);
-            this._gameLayer.addChild(highBullet);
-
-            var towerPosition = this.getPosition();
-            var creepPosition = creep.getSpritePos();
-            var distance = cc.pDistance(towerPosition, creepPosition);
-
-            var move = cc.MoveBy.create(
-                distance / 200,
-                cc.pSub(creep.getSpritePos(), highBullet.getSprite().getPosition()));
-            var action = cc.RepeatForever.create(move);
-
-            var winSize = cc.Director.getInstance().getWinSize();
-            var winSizePoint = cc.p(winSize.width, winSize.height);
-            var maxDistance = cc.pDistance(cc.p(0, 0), winSizePoint);
-            highBullet.setLifeTime(maxDistance / 400);
-
-            highBullet.getSprite().runAction(action);
-                
-
-            cc.AudioEngine.getInstance().playEffect(s_AttackHighEffect_mp3);
+        if (this._bulletType == "high") {
+            this.createHighBullet(creep);
         }
 
-
-
-        if (this._isLow) {
-        	var bullet = cc.Sprite.create(s_Bullet);
-        	bullet.setPosition(
-        		cc.pAdd(this.getPosition(),
-        			this._sBall.getPosition()));
-
-        	this._gameLayer.addChild(bullet);
-
-
-        	var move = cc.MoveTo.create(0.1, creep.getSpritePos());
-        	bullet.runAction(cc.Sequence.create(
-        		move,
-        		cc.CallFunc.create(function () {
-        			bullet.removeFromParent();
-        		}, bullet)
-        	));
-        	creep.lostBlood(this._attack);
-
-
-        	//sound
-           	cc.AudioEngine.getInstance().playEffect(s_AttackEffect_mp3);
+        if (this._bulletType == "low") {
+            this.createLowBullet(creep);
         }
     },
+
+
+    createHighBullet: function(creep) {
+        var highBullet = HighBullet.create(this._attack,this.creepList);
+        highBullet.getSprite().setPosition(
+            cc.pAdd(this.getPosition(),
+                this._sBall.getPosition()));
+
+        highBullet.checkAttack(creep);
+        this._gameLayer.addChild(highBullet);
+
+        var towerPosition = this.getPosition();
+        var creepPosition = creep.getSpritePos();
+        var distance = cc.pDistance(towerPosition, creepPosition);
+
+        var move = cc.MoveBy.create(
+            distance / 200,
+            cc.pSub(creep.getSpritePos(), highBullet.getSprite().getPosition()));
+        var action = cc.RepeatForever.create(move);
+
+        var winSize = cc.Director.getInstance().getWinSize();
+        var winSizePoint = cc.p(winSize.width, winSize.height);
+        var maxDistance = cc.pDistance(cc.p(0, 0), winSizePoint);
+        highBullet.setLifeTime(maxDistance / 400);
+
+        highBullet.getSprite().runAction(action);
+            
+
+        cc.AudioEngine.getInstance().playEffect(s_AttackHighEffect_mp3);
+    },
+
+    createLowBullet: function ( creep ) {
+        var bullet = cc.Sprite.create(s_Bullet);
+        bullet.setPosition(
+            cc.pAdd(this.getPosition(),
+                this._sBall.getPosition()));
+
+        this._gameLayer.addChild(bullet);
+
+
+        var move = cc.MoveTo.create(0.1, creep.getSpritePos());
+        bullet.runAction(cc.Sequence.create(
+            move,
+            cc.CallFunc.create(function () {
+                bullet.removeFromParent();
+            }, bullet)
+        ));
+        creep.lostBlood(this._attack);
+
+
+        //sound
+        cc.AudioEngine.getInstance().playEffect(s_AttackEffect_mp3);    
+    },
+
     setGameLayer:function (gameLayer) {
         this._gameLayer = gameLayer;
     },
@@ -342,6 +346,7 @@ var Tower = cc.Layer.extend({
         if ( this.tower.constructingAction.isDone() && this.isConstructed == false ) {
             this.isConstructed = true;
             this.createActiveAnimation();
+            this._sBall.runAction(cc.FadeIn.create(1.2));
         }
         else if( this.isConstructed ) {
             list = this.creepList;
@@ -382,7 +387,7 @@ Tower.createLow = function (game) {
 
     // Tower Construction : SpriteValue, ballSprite, AttackRange, SpeedDelay, Attack, GAME
     var tower = Tower.create(spriteValue, s_TowerBall[0], 200, 300, 20,game);
-    tower._isLow = true;
+    tower._bulletType = "low";
     return tower;
 };
 
@@ -406,6 +411,6 @@ Tower.createFreeze = function (game) {
     spriteValue.push(0.025);
     // Tower Construction : SpriteValue, ballSprite, SpeedDelay, Attack, GAME
     var tower = Tower.create(spriteValue, s_TowerBall[1], 200, 1000, 200,game);
-    tower._isLow = false;
+    tower._bulletType = "high";
     return tower;
 };
