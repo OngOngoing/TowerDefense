@@ -21,6 +21,7 @@ var HighBullet = cc.Node.extend({
         this._atkCreeps = [];
         this._creepList = creepList;
     },
+    
     getSprite:function () {
         return this._sprite;
     },
@@ -39,9 +40,9 @@ var HighBullet = cc.Node.extend({
         var tmDistance = cc.pDistance(creepPosition, bulletPosition);
 
         if (tmDistance > this._attackRange + creep.getAttackedRange()) {
-            //console.log("Out of Range" + tmDistance + " atk Range = "+this._attackRange +" "+ creep.getAttackedRange());
             return;
         }
+
         // check state
         if (creep.isDie()) {
             return;
@@ -139,25 +140,24 @@ var Tower = cc.Layer.extend({
         // Construct a tower // Creating sprite using spriteFrame
         this.createAnimatedSprite();
 
+        this.createBall(ball);
         
-        var ball = this._sBall = cc.Sprite.create(ball);
+        this.scheduleUpdate();
+
+    },
+
+    createBall: function( ballSprite ) {
+        var ball = this._sBall = cc.Sprite.create(ballSprite);
         ball.setPosition(cc.p(25, 25));
         ball.setOpacity(0);
         this.addChild(ball);
+    },
 
-
-
-
-        /*
-        // ball action
-        
+    createBallMoveBackAction: function( ball )  {
         var move = cc.MoveBy.create(1.2, cc.p(0, 6));
         var moveBack = move.reverse();
         ball.runAction(cc.RepeatForever.create(
             cc.Sequence.create(move, moveBack)));
-        */
-        this.scheduleUpdate();
-
     },
 
     createAnimatedSprite: function() {
@@ -208,7 +208,6 @@ var Tower = cc.Layer.extend({
     },
     checkAttack:function (creep) {
         if (!creep) {
-            // cc.log("creep not null");
             return;
         }
 
@@ -409,7 +408,7 @@ Tower.createFreeze = function (game) {
 
     // Active animation time rate
     spriteValue.push(0.025);
-    // Tower Construction : SpriteValue, ballSprite, SpeedDelay, Attack, GAME
+    // Tower Construction : SpriteValue, ballSprite, AttackRange, SpeedDelay, Attack, GAME
     var tower = Tower.create(spriteValue, s_TowerBall[1], 200, 1000, 200,game);
     tower._bulletType = "high";
     return tower;
