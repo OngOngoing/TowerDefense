@@ -10,15 +10,12 @@ var GameLayer = cc.LayerColor.extend({
 
     init: function() {
         this._super(this.color, this.getStageSize().width);
-        //this._super( new cc.Color4B( 50, 50, 50, 125 ) );
-        //this._super( new cc.Color4B( 30, 30, 30, 100 ) );
         this.setPosition( new cc.Point( 0, 0 ) );
 
 
 
         this.maze = new MazeNode();
         this.maze.init(this);
-        //this.maze.setPosition( cc.p( 0, 50 ) );
         this.addChild( this.maze );
 
         //create Selector
@@ -91,12 +88,20 @@ var GameLayer = cc.LayerColor.extend({
     }
 });
 
-var StartScene = cc.Scene.extend({
-    onEnter: function() {
-        this._super();
-        var layer = new GameLayer();
-        layer.init();
-        this.addChild( layer );
+
+GameLayer.create = function () {
+    var sg = new GameLayer();
+    if (sg && sg.init(cc.c4b(255, 255, 255, 255))) {
+        return sg;
     }
-});
+    return null;
+};
+
+
+GameLayer.scene = function () {
+    var scene = cc.Scene.create();
+    var layer = GameLayer.create();
+    scene.addChild(layer);
+    return scene;
+};
 

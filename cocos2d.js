@@ -19,7 +19,8 @@
             'src/Tower.js',
             'src/Creep.js',
             'src/Selector.js',
-            'src/KeyboardControlLayer.js'     //add your own files in order here
+            'src/KeyboardControlLayer.js',
+            'src/GameOver.js',     //add your own files in order here
         ]
     };
 

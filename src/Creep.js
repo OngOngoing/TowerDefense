@@ -75,6 +75,8 @@ var Creep = cc.Sprite.extend({
         if(!path){
             if(pos.x == basePos.x && pos.y == basePos.y) {
                 console.log("Destination Reached!");
+                this.maze.isGameOver = true;
+                this.maze.gameOver();
             }
             else {
                 console.log("Destination not found!");

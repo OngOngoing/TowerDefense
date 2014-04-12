@@ -26,6 +26,7 @@ window.MazeNode = cc.Node.extend({
 	spawnerPosition: null,
 	selectorPosition: null,
 	tileSize: null,
+	isGameOver: false,
 
 
 	init: function(game) {
@@ -247,6 +248,14 @@ window.MazeNode = cc.Node.extend({
 
         sprite.runningStandingAction = cc.RepeatForever.create(cc.Animate.create(animation));
         sprite.runAction(sprite.runningStandingAction);
+	},
+
+	gameOver: function() {
+		if(this.gameOver) {
+			var scene = GameOver.scene(false);
+			var gameTransition = cc.TransitionFade.create(1.0, scene);
+			cc.Director.getInstance().replaceScene(gameTransition);
+		}
 	},
 
 
