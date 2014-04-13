@@ -1,22 +1,31 @@
 var GameLayer = cc.LayerColor.extend({
 
     color: new cc.Color4B(0, 0, 0, 255),
-    money: 0,
+    energyCost: 0,
 
 
     creepLayer: null,
     creepList: [],
+    timer:10,
+    timerLabel:null,
+    gameState:null,
+    level:0,
+    maxCreepInLv:[],
+    creepNotSpawned:0,
 
 
     init: function() {
         this._super(this.color, this.getStageSize().width);
         this.setPosition( new cc.Point( 0, 0 ) );
 
-
+        this.timer = 10;
+        this.gameState = GameLayer.STATE.REST;
 
         this.maze = new MazeNode();
         this.maze.init(this);
         this.addChild( this.maze );
+
+        this.energyCost = this.maze.energyCost;
 
         //create Selector
         this.selector = new Selector(this);
@@ -33,11 +42,22 @@ var GameLayer = cc.LayerColor.extend({
 
         this.createKeyboardControl();
 
-        this.schedule(this.autoAddCreep, 2);
+        this.initSpawner();
+
+        this.schedule(this.countDownTimer,1);
+        this.schedule(this.runSpawner,0.5);
 
         this.scheduleUpdate();
 
         return true;
+    },
+
+    initSpawner: function() {
+        this.maxCreepInLv[0] = 25;
+        this.maxCreepInLv[1] = 30;
+        this.maxCreepInLv[2] = 35;
+
+        this.creepNotSpawned = this.maxCreepInLv[0];
     },
 
     createEnergyLabel: function() {
@@ -58,9 +78,72 @@ var GameLayer = cc.LayerColor.extend({
         this.maze.createEnergyCost();
     },
 
+    createTimerLabel: function() {
+        var director = cc.Director.getInstance();
+        var winSize = director.getWinSize();
+        //var neonColor = cc.c3b(117,248,250);
+        var whiteColor = cc.c3b(255,255,255);
+        this.timerLabel = cc.LabelTTF.create(this.timer, "Imagine", 36);
+        this.timerLabel.setColor(whiteColor);
+        this.timerLabel.setPosition(winSize.width-30, winSize.height-29.5);
+
+        this.battleInLabel = cc.LabelTTF.create("Battle in", "Pirulen", 16);
+        this.battleInLabel.setColor(whiteColor);
+        this.battleInLabel.setPosition(winSize.width-130, winSize.height-29.5);
+        var neonColor = cc.c3b(13,109,134);
+        
+        this.timerLabel.enableStroke(neonColor,1);
+        this.battleInLabel.enableStroke(neonColor,1);
+        this.addChild(this.timerLabel);
+        this.addChild(this.battleInLabel);
+    },
+
+    createCreepNumberLabel: function() {
+        var director = cc.Director.getInstance();
+        var winSize = director.getWinSize();
+        var whiteColor = cc.c3b(255,255,255);
+        this.creepNumberLabel = cc.LabelTTF.create(this.creepNotSpawned, "Imagine", 36);
+        this.creepNumberLabel.setColor(whiteColor);
+        this.creepNumberLabel.setPosition(winSize.width-40, winSize.height-29.5);
+
+        this.creepLeftLabel = cc.LabelTTF.create("Creeps left", "Pirulen", 16);
+        this.creepLeftLabel.setColor(whiteColor);
+        this.creepLeftLabel.setPosition(winSize.width-130, winSize.height-29.5);
+        var neonColor = cc.c3b(13,109,134);
+        
+        this.creepNumberLabel.enableStroke(neonColor,1);
+        this.creepLeftLabel.enableStroke(neonColor,1);
+        this.addChild(this.creepNumberLabel);
+        this.addChild(this.creepLeftLabel);
+        this.creepNumberLabel.setOpacity(0);
+        this.creepLeftLabel.setOpacity(0);
+    },
+
+    updateTimerLabel: function() {
+        this.timerLabel.setString(this.timer);
+    },
+
+    countDownTimer: function() {
+        if(this.gameState == GameLayer.STATE.REST) {
+            if(this.timer > 0) {
+                this.timer--;
+            }
+            else {
+                this.timerLabel.runAction(cc.FadeOut.create(0.2));
+                this.battleInLabel.runAction(cc.FadeOut.create(0.2));
+                this.gameState = GameLayer.STATE.BATTLE;
+                this.creepNumberLabel.runAction(cc.FadeIn.create(0.2));
+                this.creepLeftLabel.runAction(cc.FadeIn.create(0.2));
+            }
+        }
+    },
+
     createInformationBar: function() {
         this.createEnergyLabel();
         this.createEnergyCost();
+
+        this.createTimerLabel();
+        this.createCreepNumberLabel();
     },
 
 
@@ -68,6 +151,11 @@ var GameLayer = cc.LayerColor.extend({
         return cc.Director.getInstance().getWinSize();
     },
 
+    runSpawner: function() {
+        if(this.gameState == GameLayer.STATE.BATTLE) {
+            this.autoAddCreep();
+        }
+    },
 
     createCreep: function(creepID){
 
@@ -77,14 +165,25 @@ var GameLayer = cc.LayerColor.extend({
 
     },
 
+    goToNextLevel: function() {
+        this.creepNumberLabel.runAction(cc.FadeOut.create(0.2));
+        this.creepLeftLabel.runAction(cc.FadeOut.create(0.2));
+        this.level++;
+        this.timer = 10;
+        this.creepNotSpawned = this.maxCreepInLv[this.level];
+        this.timerLabel.runAction(cc.FadeIn.create(0.2));
+        this.battleInLabel.runAction(cc.FadeIn.create(0.2));
+    },
+
     autoAddCreep: function() {
-        var value = Math.random() * 3;
-        if (value > 2)
-            this.createCreep(Creep.createLv0(this.maze));
-        else if (value > 1)
-            this.createCreep(Creep.createLv1(this.maze));
-        else
-            this.createCreep(Creep.createLv2(this.maze));
+        if(this.creepNotSpawned > 0) {
+            this.createCreep(Creep.createLv(this.level, this.maze));
+            this.creepNotSpawned--;
+        }
+        else if(this.creepNotSpawned <= 0 && this.creepList.length <= 0) {
+            this.gameState = GameLayer.STATE.REST;
+            this.goToNextLevel();
+        }
     },
 
     createKeyboardControl: function(){
@@ -116,6 +215,7 @@ var GameLayer = cc.LayerColor.extend({
 
     update: function() {
         this.maze.updateEnergyLabel();
+        this.updateTimerLabel();
     },
 });
 
@@ -136,3 +236,7 @@ GameLayer.scene = function () {
     return scene;
 };
 
+GameLayer.STATE = {
+    "REST": 0,
+    "BATTLE": 1,
+};

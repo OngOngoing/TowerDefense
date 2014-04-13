@@ -196,14 +196,8 @@ Creep.create = function (maze, filename, maxBlood, cost) {
     return creep;
 };
 
-Creep.createLv0 = function (maze) {
-    return Creep.create(maze,s_Creep[0], 200,1);
-};
-
-Creep.createLv1 = function (maze) {
-    return Creep.create(maze,s_Creep[1], 400,2);
-};
-
-Creep.createLv2 = function (maze) {
-    return Creep.create(maze,s_Creep[2], 600,3);
+Creep.createLv = function( lv, maze ) {
+    if(lv == 0) return Creep.create(maze,s_Creep[0], 200,1);
+    if(lv == 1) return Creep.create(maze,s_Creep[1], 400,2);
+    if(lv == 2) return Creep.create(maze,s_Creep[2], 600,3);
 };
