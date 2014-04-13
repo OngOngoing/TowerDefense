@@ -261,12 +261,14 @@ window.MazeNode = cc.Node.extend({
 	createEnergyCost: function() {
 		var director = cc.Director.getInstance();
         var winSize = director.getWinSize();
-        this.energyLabel = cc.LabelTTF.create(this.energyCost, "Segoe UI", 32);
-        this.energyLabel.setColor(cc.c3b(255, 255, 255));
-        this.energyLabel.setPosition(165, winSize.height-33);
-        //var neonColor = cc.c3b(77,224,255);
+        var whiteColor = cc.c3b(255,255,255);
+        //var lightNeonColor = cc.c3b(117,248,250);
+        this.energyLabel = cc.LabelTTF.create(this.energyCost, "Imagine", 36);
+        this.energyLabel.setColor(whiteColor);
+        this.energyLabel.setPosition(280, winSize.height-29.5);
         var neonColor = cc.c3b(13,109,134);
-        this.energyLabel.enableStroke(neonColor,2);
+        
+        this.energyLabel.enableStroke(neonColor,1);
         this.addChild(this.energyLabel);
 	},
 
@@ -278,8 +280,6 @@ window.MazeNode = cc.Node.extend({
 		else if(this.tempCost > this.energyCost) {
 			this.tempCost --;
 		}
-		//this.energyLabel.setString(this.energyCost);
-		//this.tempCost = this.energyCost;
 	},
 
 

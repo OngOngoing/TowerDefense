@@ -43,11 +43,14 @@ var GameLayer = cc.LayerColor.extend({
     createEnergyLabel: function() {
         var director = cc.Director.getInstance();
         var winSize = director.getWinSize();
-        var energyLabel = cc.LabelTTF.create("Energy :", "Segoe UI", 32);
-        energyLabel.setColor(cc.c3b(255, 255, 255));
-        energyLabel.setPosition(80, winSize.height-30);
-        var neonColor = cc.c3b(13,109,134);
-        energyLabel.enableStroke(neonColor,2);
+        //var neonColor = cc.c3b(117,248,250);
+        var neonDarkColor = cc.c3b(8,103,131);
+        var whiteColor = cc.c3b(255,255,255);
+        var energyLabel = cc.LabelTTF.create("Energy :", "Pirulen", 30);
+        energyLabel.setColor(whiteColor);
+        energyLabel.setPosition(120, winSize.height-30);
+        
+        energyLabel.enableStroke(neonDarkColor,1);
         this.addChild(energyLabel);
     },
 

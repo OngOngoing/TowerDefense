@@ -94,15 +94,32 @@ var g_resources = [
     {src:s_MonsterDie_ogg},
     {src:s_MonsterAcross_mp3},
     {src:s_MonsterAcross_ogg},
-    {src:s_endGame_mp3},
 
     //plist
 
     //fnt
+    {fontName:"TR2N",
+       src:[
+                //{src:"res/fonts/Tr2n.eot", type:"embedded-opentype"},
+                {src:"res/fonts/Tr2n.ttf",type:"truetype"}
+       ]
+    },
+    {fontName:"Pirulen",
+       src:[
+                {src:"res/fonts/pirulen rg.ttf",type:"truetype"}
+       ]
+    },
+
+    {fontName:"Imagine",
+       src:[
+                {src:"res/fonts/imagine_font.ttf",type:"truetype"}
+       ]
+    },
 
     //tmx
 
     //bgm
+    {src:s_endGame_mp3},
 
 
 ];

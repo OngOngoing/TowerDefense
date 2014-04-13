@@ -1,6 +1,7 @@
 var GameOver = cc.LayerColor.extend({
  
     _won:false,
+    neonColor:cc.c3b(117, 248, 250),
  
     ctor:function() {
         this._super();
@@ -19,11 +20,12 @@ var GameOver = cc.LayerColor.extend({
         if (this._won) {
             message = "You Won!";
         } else {
-            message = "You Lose :[";
+            //message = "You Lose :[";
+            message = "GAME OVER";
         }
  
-        var label = cc.LabelTTF.create(message, "Segoe UI", 32);
-        label.setColor(cc.c3b(255, 255, 255));
+        var label = cc.LabelTTF.create(message, "TR2N", 80);
+        label.setColor(this.neonColor);
         label.setPosition(winSize.width/2, winSize.height/2);
         this.addChild(label);
         label.setOpacity(0);
