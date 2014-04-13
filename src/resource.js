@@ -14,6 +14,8 @@ var s_MonsterDie_ogg = "res/Music/MonsterDie.ogg";
 var s_MonsterAcross_mp3 = "res/Music/MonsterAcross.mp3";
 var s_MonsterAcross_ogg = "res/Music/MonsterAcross.ogg";
 
+var s_endGame_mp3 = "res/Music/gameOver.mp3";
+
 var s_Creep = [
     "res/images/Creep.png",
     "res/images/Creep1.png",
@@ -92,6 +94,7 @@ var g_resources = [
     {src:s_MonsterDie_ogg},
     {src:s_MonsterAcross_mp3},
     {src:s_MonsterAcross_ogg},
+    {src:s_endGame_mp3},
 
     //plist
 

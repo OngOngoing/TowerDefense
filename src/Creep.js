@@ -8,6 +8,9 @@ var Creep = cc.Sprite.extend({
 	_sBlood:null,
 	_sBloodBackground:null,
 	_sAttackedRange:null,
+    _cost:0,
+    maze:null,
+
 	timeStep: 0.4,
 	ctor: function(maze) {
 
@@ -134,28 +137,31 @@ var Creep = cc.Sprite.extend({
     lostBlood:function (blood) {
         this._blood = this._blood - blood;
         if (this._blood <= 0) {
-            // die
-            this._blood = 0;
-            var fadeOut = cc.FadeOut.create(0.5);
-            this._sBlood.runAction(fadeOut.clone());
-            this._sBloodBackground.runAction(fadeOut.clone());
-            this._sprite.runAction(cc.Sequence.create(
-                fadeOut,
-                cc.CallFunc.create(function () {
-                    this.removeFromParent();
-                }, this)
-            ));
-            this._isDie = true;
-            //HD.SCORE += this._maxBlood;
-
-            //if (HD.SOUND) {
-                cc.AudioEngine.getInstance().playEffect(s_MonsterDie_mp3);
-            //}
+            this.die();
         }
         this._sBlood.setScaleX(this._blood / this._maxBlood);
     },
+    die: function() {
+        this._blood = 0;
+        var fadeOut = cc.FadeOut.create(0.5);
+        this._sBlood.runAction(fadeOut.clone());
+        this._sBloodBackground.runAction(fadeOut.clone());
+        this._sprite.runAction(cc.Sequence.create(
+            fadeOut,
+            cc.CallFunc.create(function () {
+                this.removeFromParent();
+            }, this)
+        ));
+        this._isDie = true;
+        this.maze.energyCost += this._cost;
+        
+        cc.AudioEngine.getInstance().playEffect(s_MonsterDie_mp3);
+    },
     isDie:function () {
         return this._isDie;
+    },
+    setCost:function(value) {
+        this._cost = value;
     },
     getAttackedRange:function () {
         return this._attackedRange;
@@ -182,21 +188,22 @@ var Creep = cc.Sprite.extend({
 });
 
 
-Creep.create = function (maze, filename, maxBlood) {
+Creep.create = function (maze, filename, maxBlood, cost) {
     var creep = new Creep(maze);
     creep.init(filename);
     creep.setBlood(maxBlood);
+    creep.setCost(cost);
     return creep;
 };
 
 Creep.createLv0 = function (maze) {
-    return Creep.create(maze,s_Creep[0], 200);
+    return Creep.create(maze,s_Creep[0], 200,1);
 };
 
 Creep.createLv1 = function (maze) {
-    return Creep.create(maze,s_Creep[1], 400);
+    return Creep.create(maze,s_Creep[1], 400,2);
 };
 
 Creep.createLv2 = function (maze) {
-    return Creep.create(maze,s_Creep[2], 600);
+    return Creep.create(maze,s_Creep[2], 600,3);
 };

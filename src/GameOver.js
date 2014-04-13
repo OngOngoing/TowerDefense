@@ -27,14 +27,14 @@ var GameOver = cc.LayerColor.extend({
         label.setPosition(winSize.width/2, winSize.height/2);
         this.addChild(label);
         label.setOpacity(0);
-        var fadeIn = cc.FadeIn.create(4);
+        var fadeIn = cc.FadeIn.create(7);
         label.runAction(fadeIn);
  
         this.runAction(cc.Sequence.create(
-            cc.DelayTime.create(10),
+            cc.DelayTime.create(12.5),
             cc.CallFunc.create(function(node) {
                 var scene = GameLayer.scene();
-                var gameTransition = cc.TransitionFade.create(1.0, scene);
+                var gameTransition = cc.TransitionFade.create(1, scene);
                 cc.Director.getInstance().replaceScene(gameTransition);
             }, this)
         ));

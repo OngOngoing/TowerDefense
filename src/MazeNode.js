@@ -27,6 +27,9 @@ window.MazeNode = cc.Node.extend({
 	selectorPosition: null,
 	tileSize: null,
 	isGameOver: false,
+	energyCost: 20,
+	tempCost: 0,
+	energyLabel: null,
 
 
 	init: function(game) {
@@ -172,13 +175,17 @@ window.MazeNode = cc.Node.extend({
 		if(!block || block.blockType != "ground"){
 			return false;
 		}
-		block.blockType = "tower";
-		block.tower = Tower.createFreeze(this.game);
-		block.tower.setPosition(p);
-		block.tower.setAnchorPoint(0,0);
-		block.tower.isShowRange = false;
-		this.addChild(block.tower);
-		this.rebuildMazeState();
+		if(this.energyCost >= 20) {
+			block.tower = Tower.createFreeze(this.game);
+			block.tower.setPosition(p);
+			block.tower.setAnchorPoint(0,0);
+			block.tower.isShowRange = false;
+			this.addChild(block.tower);
+			this.rebuildMazeState();
+			this.energyCost -= 20;
+			block.blockType = "tower";
+		}
+
 		return true;
 	},
 
@@ -250,11 +257,38 @@ window.MazeNode = cc.Node.extend({
         sprite.runAction(sprite.runningStandingAction);
 	},
 
+	createEnergyCost: function() {
+		var director = cc.Director.getInstance();
+        var winSize = director.getWinSize();
+        this.energyLabel = cc.LabelTTF.create(this.energyCost, "Segoe UI", 32);
+        this.energyLabel.setColor(cc.c3b(255, 255, 255));
+        this.energyLabel.setPosition(165, winSize.height-33);
+        //var neonColor = cc.c3b(77,224,255);
+        var neonColor = cc.c3b(13,109,134);
+        this.energyLabel.enableStroke(neonColor,2);
+        this.addChild(this.energyLabel);
+	},
+
+	updateEnergyLabel: function() {
+		this.energyLabel.setString(this.tempCost);
+		if(this.tempCost < this.energyCost) {
+			this.tempCost++;
+		}
+		else if(this.tempCost > this.energyCost) {
+			this.tempCost --;
+		}
+		//this.energyLabel.setString(this.energyCost);
+		//this.tempCost = this.energyCost;
+	},
+
+
 	gameOver: function() {
 		if(this.gameOver) {
+			cc.AudioEngine.getInstance().playMusic(s_endGame_mp3);
 			var scene = GameOver.scene(false);
-			var gameTransition = cc.TransitionFade.create(1.0, scene);
+			var gameTransition = cc.TransitionFade.create(1, scene);
 			cc.Director.getInstance().replaceScene(gameTransition);
+
 		}
 	},
 

@@ -28,12 +28,36 @@ var GameLayer = cc.LayerColor.extend({
         this.addChild(this.creepLayer);
         this.creepList = this.creepLayer.getChildren();
 
+        this.createInformationBar();
+
 
         this.createKeyboardControl();
 
         this.schedule(this.autoAddCreep, 2);
 
+        this.scheduleUpdate();
+
         return true;
+    },
+
+    createEnergyLabel: function() {
+        var director = cc.Director.getInstance();
+        var winSize = director.getWinSize();
+        var energyLabel = cc.LabelTTF.create("Energy :", "Segoe UI", 32);
+        energyLabel.setColor(cc.c3b(255, 255, 255));
+        energyLabel.setPosition(80, winSize.height-30);
+        var neonColor = cc.c3b(13,109,134);
+        energyLabel.enableStroke(neonColor,2);
+        this.addChild(energyLabel);
+    },
+
+    createEnergyCost: function() {
+        this.maze.createEnergyCost();
+    },
+
+    createInformationBar: function() {
+        this.createEnergyLabel();
+        this.createEnergyCost();
     },
 
 
@@ -85,7 +109,11 @@ var GameLayer = cc.LayerColor.extend({
         for(var i=0; i<this.creepList.length; i++){
             this.creepList[i].findPath();
         }
-    }
+    },
+
+    update: function() {
+        this.maze.updateEnergyLabel();
+    },
 });
 
 
