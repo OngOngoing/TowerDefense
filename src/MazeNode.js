@@ -30,6 +30,7 @@ window.MazeNode = cc.Node.extend({
 	energyCost: 20,
 	tempCost: 0,
 	energyLabel: null,
+	creepKills:0,
 
 
 	init: function(game) {

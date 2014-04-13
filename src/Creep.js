@@ -153,6 +153,7 @@ var Creep = cc.Sprite.extend({
             }, this)
         ));
         this._isDie = true;
+        this.maze.creepKills++;
         this.maze.energyCost += this._cost;
         
         cc.AudioEngine.getInstance().playEffect(s_MonsterDie_mp3);

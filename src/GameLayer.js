@@ -12,6 +12,8 @@ var GameLayer = cc.LayerColor.extend({
     level:0,
     maxCreepInLv:[],
     creepNotSpawned:0,
+    creepKills:0,
+    maxCreepNow:0,
 
 
     init: function() {
@@ -58,6 +60,7 @@ var GameLayer = cc.LayerColor.extend({
         this.maxCreepInLv[2] = 35;
 
         this.creepNotSpawned = this.maxCreepInLv[0];
+        this.maxCreepNow = this.maxCreepInLv[0];
     },
 
     createEnergyLabel: function() {
@@ -98,29 +101,57 @@ var GameLayer = cc.LayerColor.extend({
         this.addChild(this.battleInLabel);
     },
 
+    createLevelLabel: function() {
+        var director = cc.Director.getInstance();
+        var winSize = director.getWinSize();
+        //var neonColor = cc.c3b(117,248,250);
+        var whiteColor = cc.c3b(255,255,255);
+        this.levelNumberLabel = cc.LabelTTF.create(this.level+"", "Imagine", 36);
+        this.levelNumberLabel.setColor(whiteColor);
+        this.levelNumberLabel.setPosition(winSize.width/2, winSize.height-35);
+
+        this.levelLabel = cc.LabelTTF.create("Level", "Pirulen", 14);
+        this.levelLabel.setColor(whiteColor);
+        this.levelLabel.setPosition(winSize.width/2, winSize.height-12);
+        var neonColor = cc.c3b(13,109,134);
+        
+        this.levelNumberLabel.enableStroke(neonColor,1);
+        this.levelLabel.enableStroke(neonColor,1);
+        this.addChild(this.levelNumberLabel);
+        this.addChild(this.levelLabel);
+    },
+
     createCreepNumberLabel: function() {
         var director = cc.Director.getInstance();
         var winSize = director.getWinSize();
         var whiteColor = cc.c3b(255,255,255);
-        this.creepNumberLabel = cc.LabelTTF.create(this.creepNotSpawned, "Imagine", 36);
+        this.creepNumberLabel = cc.LabelTTF.create(this.maze.creepKills, "Imagine", 20);
         this.creepNumberLabel.setColor(whiteColor);
-        this.creepNumberLabel.setPosition(winSize.width-40, winSize.height-29.5);
+        this.creepNumberLabel.setPosition(winSize.width-50, winSize.height-29.5);
 
-        this.creepLeftLabel = cc.LabelTTF.create("Creeps left", "Pirulen", 16);
-        this.creepLeftLabel.setColor(whiteColor);
-        this.creepLeftLabel.setPosition(winSize.width-130, winSize.height-29.5);
+        this.creepKillsLabel = cc.LabelTTF.create("Creep kills", "Pirulen", 16);
+        this.creepKillsLabel.setColor(whiteColor);
+        this.creepKillsLabel.setPosition(winSize.width-190, winSize.height-29.5);
         var neonColor = cc.c3b(13,109,134);
         
         this.creepNumberLabel.enableStroke(neonColor,1);
-        this.creepLeftLabel.enableStroke(neonColor,1);
+        this.creepKillsLabel.enableStroke(neonColor,1);
         this.addChild(this.creepNumberLabel);
-        this.addChild(this.creepLeftLabel);
+        this.addChild(this.creepKillsLabel);
         this.creepNumberLabel.setOpacity(0);
-        this.creepLeftLabel.setOpacity(0);
+        this.creepKillsLabel.setOpacity(0);
     },
 
     updateTimerLabel: function() {
         this.timerLabel.setString(this.timer);
+    },
+
+    updateCreepKillsLabel: function() {
+        this.creepNumberLabel.setString(this.maze.creepKills + "/" + this.maxCreepNow);
+    },
+
+    updateLevelLabel: function() {
+        this.levelNumberLabel.setString(this.level);
     },
 
     countDownTimer: function() {
@@ -133,7 +164,7 @@ var GameLayer = cc.LayerColor.extend({
                 this.battleInLabel.runAction(cc.FadeOut.create(0.2));
                 this.gameState = GameLayer.STATE.BATTLE;
                 this.creepNumberLabel.runAction(cc.FadeIn.create(0.2));
-                this.creepLeftLabel.runAction(cc.FadeIn.create(0.2));
+                this.creepKillsLabel.runAction(cc.FadeIn.create(0.2));
             }
         }
     },
@@ -144,6 +175,7 @@ var GameLayer = cc.LayerColor.extend({
 
         this.createTimerLabel();
         this.createCreepNumberLabel();
+        this.createLevelLabel();
     },
 
 
@@ -167,10 +199,11 @@ var GameLayer = cc.LayerColor.extend({
 
     goToNextLevel: function() {
         this.creepNumberLabel.runAction(cc.FadeOut.create(0.2));
-        this.creepLeftLabel.runAction(cc.FadeOut.create(0.2));
+        this.creepKillsLabel.runAction(cc.FadeOut.create(0.2));
         this.level++;
         this.timer = 10;
         this.creepNotSpawned = this.maxCreepInLv[this.level];
+        this.maxCreepNow += this.maxCreepInLv[this.level];
         this.timerLabel.runAction(cc.FadeIn.create(0.2));
         this.battleInLabel.runAction(cc.FadeIn.create(0.2));
     },
@@ -216,6 +249,8 @@ var GameLayer = cc.LayerColor.extend({
     update: function() {
         this.maze.updateEnergyLabel();
         this.updateTimerLabel();
+        this.updateCreepKillsLabel();
+        this.updateLevelLabel();
     },
 });
 
