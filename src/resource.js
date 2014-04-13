@@ -51,6 +51,8 @@ var s_Wall = "res/images/mc.png";
 
 var s_Selector = "res/images/Selector.png";
 
+var s_gameOver = "res/images/gameOver.png"
+
 
 var g_resources = [
     //image
@@ -84,6 +86,7 @@ var g_resources = [
     {src:s_Wall},
 
     {src:s_Selector},
+    {src:s_gameOver},
 
     //effect
     {src:s_AttackEffect_mp3},

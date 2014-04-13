@@ -11,7 +11,32 @@ var GameOver = cc.LayerColor.extend({
     onEnter:function () {
  
         this._super();
+
+        this.createGameOverSprite();
+        //this.createGameOverLabel();
+        this.runAction(cc.Sequence.create(
+            cc.DelayTime.create(12.5),
+            cc.CallFunc.create(function(node) {
+                var scene = GameLayer.scene();
+                var gameTransition = cc.TransitionFade.create(1, scene);
+                cc.Director.getInstance().replaceScene(gameTransition);
+            }, this)
+        ));
  
+    },
+    createGameOverSprite: function() {
+        var director = cc.Director.getInstance();
+        var winSize = director.getWinSize();
+        var centerPos = cc.p( winSize.width/2, winSize.height/2 );
+
+        this._sprite = cc.Sprite.create(s_gameOver);
+        this._sprite.setPosition(centerPos);
+        this.addChild(this._sprite);
+        this._sprite.setOpacity(0);
+        var fadeIn = cc.FadeIn.create(7);
+        this._sprite.runAction(fadeIn);
+    },
+    createGameOverLabel: function() {
         var director = cc.Director.getInstance();
         var winSize = director.getWinSize();
         var centerPos = cc.p( winSize.width/2, winSize.height/2 );
@@ -31,17 +56,7 @@ var GameOver = cc.LayerColor.extend({
         label.setOpacity(0);
         var fadeIn = cc.FadeIn.create(7);
         label.runAction(fadeIn);
- 
-        this.runAction(cc.Sequence.create(
-            cc.DelayTime.create(12.5),
-            cc.CallFunc.create(function(node) {
-                var scene = GameLayer.scene();
-                var gameTransition = cc.TransitionFade.create(1, scene);
-                cc.Director.getInstance().replaceScene(gameTransition);
-            }, this)
-        ));
- 
-    }
+    },
 });
  
 GameOver.create = function (won) {
