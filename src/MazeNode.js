@@ -180,10 +180,11 @@ window.MazeNode = cc.Node.extend({
 			block.tower.setPosition(p);
 			block.tower.setAnchorPoint(0,0);
 			block.tower.isShowRange = false;
+			block.blockType = "tower";
 			this.addChild(block.tower);
 			this.rebuildMazeState();
 			this.energyCost -= 20;
-			block.blockType = "tower";
+
 		}
 
 		return true;
