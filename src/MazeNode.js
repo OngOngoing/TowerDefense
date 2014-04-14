@@ -176,7 +176,7 @@ window.MazeNode = cc.Node.extend({
 		if(!block || block.blockType != "ground"){
 			return false;
 		}
-		if(this.energyCost >= 20) {
+		if(this.energyCost >= 5) {
 			block.tower = Tower.createFreeze(this.game);
 			block.tower.setPosition(p);
 			block.tower.setAnchorPoint(0,0);
@@ -184,7 +184,7 @@ window.MazeNode = cc.Node.extend({
 			block.blockType = "tower";
 			this.addChild(block.tower);
 			this.rebuildMazeState();
-			this.energyCost -= 20;
+			this.energyCost -= 5;
 
 		}
 
@@ -286,6 +286,9 @@ window.MazeNode = cc.Node.extend({
 
 	gameOver: function() {
 		if(this.gameOver) {
+			cc.AudioEngine.getInstance().stopAllEffects();
+
+			cc.AudioEngine.getInstance().setMusicVolume(1);
 			cc.AudioEngine.getInstance().playMusic(s_endGame_mp3);
 			var scene = GameOver.scene(false);
 			var gameTransition = cc.TransitionFade.create(1, scene);

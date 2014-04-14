@@ -144,6 +144,10 @@ var GameLayer = cc.LayerColor.extend({
 
     updateTimerLabel: function() {
         this.timerLabel.setString(this.timer);
+        if(this.timer == 1) {
+            cc.AudioEngine.getInstance().setMusicVolume(0.4);
+            cc.AudioEngine.getInstance().playMusic(s_Battle1_mp3,true);
+        }
     },
 
     updateCreepKillsLabel: function() {
@@ -152,6 +156,7 @@ var GameLayer = cc.LayerColor.extend({
 
     updateLevelLabel: function() {
         this.levelNumberLabel.setString(this.level);
+
     },
 
     countDownTimer: function() {
@@ -198,6 +203,10 @@ var GameLayer = cc.LayerColor.extend({
     },
 
     goToNextLevel: function() {
+        cc.AudioEngine.getInstance().stopAllEffects();
+
+        cc.AudioEngine.getInstance().stopMusic();
+
         this.creepNumberLabel.runAction(cc.FadeOut.create(0.2));
         this.creepKillsLabel.runAction(cc.FadeOut.create(0.2));
         this.level++;

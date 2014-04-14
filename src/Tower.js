@@ -297,7 +297,7 @@ var Tower = cc.Layer.extend({
 
 
         //sound
-        cc.AudioEngine.getInstance().playEffect(s_AttackEffect_mp3);    
+        //cc.AudioEngine.getInstance().playEffect(s_AttackEffect_mp3);    
     },
 
     setGameLayer:function (gameLayer) {
