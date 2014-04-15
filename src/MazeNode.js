@@ -177,7 +177,7 @@ window.MazeNode = cc.Node.extend({
 			return false;
 		}
 		if(this.energyCost >= 5) {
-			block.tower = Tower.createFreeze(this.game);
+			block.tower = Tower.createLow(this.game);
 			block.tower.setPosition(p);
 			block.tower.setAnchorPoint(0,0);
 			block.tower.isShowRange = false;
@@ -284,13 +284,13 @@ window.MazeNode = cc.Node.extend({
 	},
 
 
-	gameOver: function() {
+	gameOver: function(isWon) {
 		if(this.gameOver) {
 			cc.AudioEngine.getInstance().stopAllEffects();
 
 			cc.AudioEngine.getInstance().setMusicVolume(1);
 			cc.AudioEngine.getInstance().playMusic(s_endGame_mp3);
-			var scene = GameOver.scene(false);
+			var scene = GameOver.scene(isWon);
 			var gameTransition = cc.TransitionFade.create(1, scene);
 			cc.Director.getInstance().replaceScene(gameTransition);
 

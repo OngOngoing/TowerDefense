@@ -9,6 +9,8 @@ var Creep = cc.Sprite.extend({
 	_sBloodBackground:null,
 	_sAttackedRange:null,
     _cost:0,
+    stack:0,
+    prestack:0,
     maze:null,
 
 	timeStep: 0.4,
@@ -73,23 +75,29 @@ var Creep = cc.Sprite.extend({
         }
 
         var path = this.path.shift();
-        var pos = this.maze.toGridPos(this.getPosition());
-        var basePos = this.maze.toGridPos(this.maze.basePosition);
+        var distance = cc.pDistance(this.getPosition(), this.maze.basePosition)
         if(!path){
-            if(pos.x == basePos.x && pos.y == basePos.y) {
+            if( distance <=10 ) {
                 console.log("Destination Reached!");
                 this.maze.isGameOver = true;
-                this.maze.gameOver();
+                this.maze.gameOver(false);
             }
             else {
                 console.log("Destination not found!");
+                if(this.stack == 0 ) {
+                    this.prestack = (new Date()).valueOf() ;
+                }
+                this.stack = ((new Date()).valueOf() - this.prestack ) /1000;
+
+                if(this.stack >= 3) {
+                    this.maze.isGameOver = true;
+                    this.maze.gameOver(false);
+                }
             }
             return;
         }
 
-        //var pos = this.maze.toGridPos(this.getPosition());
         var movePath = this.maze.toGamePos(cc.p(path[0], path[1]));
-        var moveDistance = Math.sqrt(Math.pow(pos.x - path[0], 2) + Math.pow(pos.y - path[1], 2));
         this.moveAction = cc.MoveTo.create(this.timeStep, movePath);
 
 
@@ -164,6 +172,11 @@ var Creep = cc.Sprite.extend({
     setCost:function(value) {
         this._cost = value;
     },
+
+    destinationBlockedStack: function() {
+        this.stack += 1;
+    },
+
     getAttackedRange:function () {
         return this._attackedRange;
     },
@@ -201,4 +214,5 @@ Creep.createLv = function( lv, maze ) {
     if(lv == 0) return Creep.create(maze,s_Creep[0], 200,1);
     if(lv == 1) return Creep.create(maze,s_Creep[1], 400,2);
     if(lv == 2) return Creep.create(maze,s_Creep[2], 600,3);
+    if(lv == 3) return Creep.create(maze,s_Creep[3], 2000,4);
 };

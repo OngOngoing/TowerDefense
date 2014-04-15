@@ -16,7 +16,8 @@ var s_endGame_mp3 = "res/Music/bgm/gameOver.mp3";
 var s_Creep = [
     "res/images/Creep.png",
     "res/images/Creep1.png",
-    "res/images/Creep2.png"
+    "res/images/Creep2.png",
+    "res/images/jl.png",
 ];
 
 var s_Disk = [
@@ -30,8 +31,8 @@ var s_Android = [
 ];
 
 var s_Tower = [
-    "res/images/Tower.png",
-    "res/images/Tower.png"
+    "res/images/tower.png",
+    "res/images/tower.png"
 ];
 
 var s_TowerBall = [
@@ -63,6 +64,7 @@ var g_resources = [
     {src:s_Creep[0]},
     {src:s_Creep[1]},
     {src:s_Creep[2]},
+    {src:s_Creep[3]},
 
     {src:s_Disk[0]},
     {src:s_Disk[1]},
@@ -100,9 +102,15 @@ var g_resources = [
                 {src:"res/fonts/Tr2n.ttf",type:"truetype"}
        ]
     },
-    {fontName:"Pirulen",
+    {fontName:"GoodTimes",
        src:[
-                {src:"res/fonts/pirulen rg.ttf",type:"truetype"}
+                {src:"res/fonts/GoodTimes.ttf",type:"truetype"}
+       ]
+    },
+
+    {fontName:"N-Gage",
+       src:[
+                {src:"res/fonts/N-Gage.ttf",type:"truetype"}
        ]
     },
 

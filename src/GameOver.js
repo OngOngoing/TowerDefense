@@ -11,9 +11,12 @@ var GameOver = cc.LayerColor.extend({
     onEnter:function () {
  
         this._super();
-
-        this.createGameOverSprite();
-        //this.createGameOverLabel();
+        if(this._won) {
+            this.createGameOverLabel();
+        }
+        else { 
+            this.createGameOverSprite();
+        }
         this.runAction(cc.Sequence.create(
             cc.DelayTime.create(12.5),
             cc.CallFunc.create(function(node) {
@@ -43,13 +46,13 @@ var GameOver = cc.LayerColor.extend({
 
         var message;
         if (this._won) {
-            message = "You Won!";
+            message = "You Win!";
         } else {
             //message = "You Lose :[";
             message = "GAME OVER";
         }
  
-        var label = cc.LabelTTF.create(message, "TR2N", 80);
+        var label = cc.LabelTTF.create(message, "TR2N", 140);
         label.setColor(this.neonColor);
         label.setPosition(winSize.width/2, winSize.height/2);
         this.addChild(label);

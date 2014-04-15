@@ -58,6 +58,7 @@ var GameLayer = cc.LayerColor.extend({
         this.maxCreepInLv[0] = 25;
         this.maxCreepInLv[1] = 30;
         this.maxCreepInLv[2] = 35;
+        this.maxCreepInLv[3] = 40;
 
         this.creepNotSpawned = this.maxCreepInLv[0];
         this.maxCreepNow = this.maxCreepInLv[0];
@@ -69,9 +70,9 @@ var GameLayer = cc.LayerColor.extend({
         //var neonColor = cc.c3b(117,248,250);
         var neonDarkColor = cc.c3b(8,103,131);
         var whiteColor = cc.c3b(255,255,255);
-        var energyLabel = cc.LabelTTF.create("Energy :", "Pirulen", 30);
+        var energyLabel = cc.LabelTTF.create("Energy :", "N-Gage", 28);
         energyLabel.setColor(whiteColor);
-        energyLabel.setPosition(120, winSize.height-30);
+        energyLabel.setPosition(120, winSize.height-27);
         
         energyLabel.enableStroke(neonDarkColor,1);
         this.addChild(energyLabel);
@@ -90,7 +91,7 @@ var GameLayer = cc.LayerColor.extend({
         this.timerLabel.setColor(whiteColor);
         this.timerLabel.setPosition(winSize.width-30, winSize.height-29.5);
 
-        this.battleInLabel = cc.LabelTTF.create("Battle in", "Pirulen", 16);
+        this.battleInLabel = cc.LabelTTF.create("BATTLE IN", "GoodTimes", 18);
         this.battleInLabel.setColor(whiteColor);
         this.battleInLabel.setPosition(winSize.width-130, winSize.height-29.5);
         var neonColor = cc.c3b(13,109,134);
@@ -110,7 +111,7 @@ var GameLayer = cc.LayerColor.extend({
         this.levelNumberLabel.setColor(whiteColor);
         this.levelNumberLabel.setPosition(winSize.width/2, winSize.height-35);
 
-        this.levelLabel = cc.LabelTTF.create("Level", "Pirulen", 14);
+        this.levelLabel = cc.LabelTTF.create("Level", "N-Gage", 18);
         this.levelLabel.setColor(whiteColor);
         this.levelLabel.setPosition(winSize.width/2, winSize.height-12);
         var neonColor = cc.c3b(13,109,134);
@@ -125,11 +126,11 @@ var GameLayer = cc.LayerColor.extend({
         var director = cc.Director.getInstance();
         var winSize = director.getWinSize();
         var whiteColor = cc.c3b(255,255,255);
-        this.creepNumberLabel = cc.LabelTTF.create(this.maze.creepKills, "Imagine", 20);
+        this.creepNumberLabel = cc.LabelTTF.create(this.maze.creepKills, "Imagine", 22);
         this.creepNumberLabel.setColor(whiteColor);
         this.creepNumberLabel.setPosition(winSize.width-50, winSize.height-29.5);
 
-        this.creepKillsLabel = cc.LabelTTF.create("Creep kills", "Pirulen", 16);
+        this.creepKillsLabel = cc.LabelTTF.create("CREEP KILLS", "GoodTimes", 18);
         this.creepKillsLabel.setColor(whiteColor);
         this.creepKillsLabel.setPosition(winSize.width-190, winSize.height-29.5);
         var neonColor = cc.c3b(13,109,134);
@@ -215,6 +216,11 @@ var GameLayer = cc.LayerColor.extend({
         this.maxCreepNow += this.maxCreepInLv[this.level];
         this.timerLabel.runAction(cc.FadeIn.create(0.2));
         this.battleInLabel.runAction(cc.FadeIn.create(0.2));
+
+        if(this.level == 4) {
+            this.maze.isGameOver = true;
+            this.maze.gameOver(true);
+        }
     },
 
     autoAddCreep: function() {
