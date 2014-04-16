@@ -171,22 +171,29 @@ window.MazeNode = cc.Node.extend({
 		return block ? block.blockType : null;
 	},
 
-	createAt: function(p){
+	createAt: function(p, towerType){
 		var block = this._getBlockAt(p);
 		if(!block || block.blockType != "ground"){
 			return false;
 		}
-		if(this.energyCost >= 5) {
+		if(this.energyCost >= 5 && towerType == "LOW") {
 			block.tower = Tower.createLow(this.game);
-			block.tower.setPosition(p);
-			block.tower.setAnchorPoint(0,0);
-			block.tower.isShowRange = false;
-			block.blockType = "tower";
-			this.addChild(block.tower);
-			this.rebuildMazeState();
 			this.energyCost -= 5;
-
 		}
+		else if(this.energyCost >= 40 && towerType == "HIGH") {
+			block.tower = Tower.createHigh(this.game);
+			this.energyCost -= 40;
+		}
+		else {
+			console.log("Insufficient Funds!");
+			return false;
+		}
+		block.tower.setPosition(p);
+		block.tower.setAnchorPoint(0,0);
+		block.tower.isShowRange = false;
+		block.blockType = "tower";
+		this.addChild(block.tower);
+		this.rebuildMazeState();
 
 		return true;
 	},

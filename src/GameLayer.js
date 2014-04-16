@@ -146,7 +146,7 @@ var GameLayer = cc.LayerColor.extend({
     updateTimerLabel: function() {
         this.timerLabel.setString(this.timer);
         if(this.timer == 1) {
-            cc.AudioEngine.getInstance().setMusicVolume(0.4);
+            cc.AudioEngine.getInstance().setMusicVolume(0.2);
             cc.AudioEngine.getInstance().playMusic(s_Battle1_mp3,true);
         }
     },
@@ -246,7 +246,8 @@ var GameLayer = cc.LayerColor.extend({
             down: Selector.DIR.DOWN,
             left: Selector.DIR.LEFT,
             right: Selector.DIR.RIGHT,
-            create: Selector.CTRL.CREATE,
+            createLow: Selector.CTRL.CREATE_LOW,
+            createHigh: Selector.CTRL.CREATE_HIGH,
             del: Selector.CTRL.DELETE,
             upgrade: Selector.CTRL.UPGRADE,
             show_range: Selector.CTRL.SHOW_RANGE,

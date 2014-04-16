@@ -390,7 +390,7 @@ Tower.createLow = function (game) {
     return tower;
 };
 
-Tower.createFreeze = function (game) {
+Tower.createHigh = function (game) {
     var cache = cc.SpriteFrameCache.getInstance();
     cache.addSpriteFrames( s_Android[0], s_Android[1] );
     var spriteValue = [];

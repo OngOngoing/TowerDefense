@@ -49,18 +49,29 @@ window.Selector = cc.Sprite.extend({
 			this.direction = null;
 
 		
-		//CREATE
-		}else if(this.direction == Selector.CTRL.CREATE){
+		//CREATE LOW
+		}else if(this.direction == Selector.CTRL.CREATE_LOW){
 			var blockType = this.maze.getBlockAt(targetPos);
 			if(blockType == "tower" || blockType == "wall" || !blockType){
 				return;
 			}else if(blockType == "ground"){
 				console.log("ground");
-				this.maze.createAt(targetPos);
+				this.maze.createAt(targetPos,"LOW");
 			}
 			
 			this.direction = null;
 
+		//CREATE HIGH
+		}else if(this.direction == Selector.CTRL.CREATE_HIGH){
+			var blockType = this.maze.getBlockAt(targetPos);
+			if(blockType == "tower" || blockType == "wall" || !blockType){
+				return;
+			}else if(blockType == "ground"){
+				console.log("ground");
+				this.maze.createAt(targetPos,"HIGH");
+			}
+			
+			this.direction = null;
 
 		//TOGGLE to SHOW TOWER RANGE
 		}else if(this.direction == Selector.CTRL.SHOW_RANGE ){
@@ -121,8 +132,9 @@ window.Selector.DIR = {
 };
 
 window.Selector.CTRL = {
-	"CREATE": 10,
+	"CREATE_LOW": 10,
+	"CREATE_HIGH":11,
 	"DELETE": -1,
-	"UPGRADE": 11,
+	"UPGRADE": 50,
 	"SHOW_RANGE": 99,
 };
