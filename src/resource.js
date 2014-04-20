@@ -1,6 +1,6 @@
 
-var s_Blood = "res/images/Bloodred.png";
-var s_BloodBackground = "res/images/BloodBackground.png";
+var s_Blood = "res/images/creep/Bloodred.png";
+var s_BloodBackground = "res/images/creep/BloodBackground.png";
 var s_Bullet = "res/images/Shell.png";
 var s_HighBullet = "res/images/HighShell.png";
 var s_AttackRange = "res/images/range.png";
@@ -14,10 +14,18 @@ var s_Battle1_mp3 = "res/Music/bgm/battle1.mp3";
 var s_endGame_mp3 = "res/Music/bgm/gameOver.mp3";
 
 var s_Creep = [
-    "res/images/Creep.png",
-    "res/images/Creep1.png",
-    "res/images/Creep2.png",
-    "res/images/jl.png",
+    "res/images/creep/Creep.png",
+    "res/images/creep/Creep1.png",
+    "res/images/creep/Creep2.png",
+    "res/images/creep/Creep3.png",
+    "res/images/creep/Creep4.png",
+    "res/images/creep/Creep5.png",
+    "res/images/creep/Creep6.png",
+    "res/images/creep/Creep7.png",
+    "res/images/creep/Creep8.png",
+    "res/images/creep/Creep9.png",
+    "res/images/creep/Creep10.png",
+    "res/images/creep/jl.png",
 ];
 
 var s_Disk = [
@@ -45,7 +53,7 @@ var s_CombWall = [
     "res/images/comb/comb.png",
 ];
 
-var s_Wall = "res/images/mc.png";
+var s_Wall = "res/images/wall.png";
 
 var s_Selector = "res/images/Selector.png";
 

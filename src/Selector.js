@@ -99,13 +99,17 @@ window.Selector = cc.Sprite.extend({
 		var topSide = this.getStageSize().height - this.maze.tileSize.height;
 		if(targetPos.x < 0){
 			targetPos.x = rightSide;
+			this.setPosition(targetPos);
 		}else if(targetPos.x > rightSide){
 			targetPos.x = 0;
+			this.setPosition(targetPos);
 		}
 		if(targetPos.y < 0){
 			targetPos.y = topSide;
+			this.setPosition(targetPos);
 		}else if(targetPos.y > topSide){
 			targetPos.y = 0;
+			this.setPosition(targetPos);
 		}
 		//this.setPosition(targetPos);
 

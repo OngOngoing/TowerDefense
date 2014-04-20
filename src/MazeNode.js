@@ -143,7 +143,7 @@ window.MazeNode = cc.Node.extend({
 		}
 
 		var map = {
-			"tower": 2,
+			"tower": 1,
 			"wall": 1,
 			"ground":0,
 		}

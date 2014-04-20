@@ -46,7 +46,7 @@ var GameOver = cc.LayerColor.extend({
 
         var message;
         if (this._won) {
-            message = "KUY!";
+            message = "You Win!";
         } else {
             //message = "You Lose :[";
             message = "GAME OVER";

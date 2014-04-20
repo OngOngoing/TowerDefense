@@ -8,6 +8,7 @@ var Creep = cc.Sprite.extend({
 	_sBlood:null,
 	_sBloodBackground:null,
 	_sAttackedRange:null,
+    _isFlying:false,
     _cost:0,
     stack:0,
     prestack:0,
@@ -96,13 +97,17 @@ var Creep = cc.Sprite.extend({
             }
             return;
         }
+        if(this._isFlying) {
+            this.flyToBasePosition();            
+        }
+        else {
+            var movePath = this.maze.toGamePos(cc.p(path[0], path[1]));
+            this.moveAction = cc.MoveTo.create(this.timeStep, movePath);
+            
+            this.stopAllActions();
+            this.runAction(this.moveAction);
+        }
 
-        var movePath = this.maze.toGamePos(cc.p(path[0], path[1]));
-        this.moveAction = cc.MoveTo.create(this.timeStep, movePath);
-
-
-        this.stopAllActions();
-        this.runAction(this.moveAction);
 	},
 
     findPath: function(){
@@ -117,6 +122,19 @@ var Creep = cc.Sprite.extend({
 
         return this.path;
     },
+
+    flyToBasePosition: function() {
+        var movePath = this.maze.basePosition;
+        this.moveAction = cc.MoveTo.create(this.timeStep, movePath);
+        this.runAction(cc.Sequence.create(
+            this.moveAction,
+            cc.CallFunc.create(function () {
+                this.maze.isGameOver = true;
+                this.maze.gameOver(false);
+            }, this)
+        ));
+    },
+
 
 
 	update: function(){
@@ -151,7 +169,7 @@ var Creep = cc.Sprite.extend({
     },
     die: function() {
         this._blood = 0;
-        var fadeOut = cc.FadeOut.create(0.5);
+        var fadeOut = cc.FadeOut.create(0.2);
         this._sBlood.runAction(fadeOut.clone());
         this._sBloodBackground.runAction(fadeOut.clone());
         this._sprite.runAction(cc.Sequence.create(
@@ -171,6 +189,12 @@ var Creep = cc.Sprite.extend({
     },
     setCost:function(value) {
         this._cost = value;
+    },
+    setIsFlying: function(value) {
+        this._isFlying = value;
+    },
+    setSpeed: function(value) {
+        this.timeStep = value;
     },
 
     destinationBlockedStack: function() {
@@ -210,9 +234,36 @@ Creep.create = function (maze, filename, maxBlood, cost) {
     return creep;
 };
 
+Creep.createHaste = function(maze, filename, maxBlood, cost, speed) {
+    var creep = new Creep(maze);
+    creep.init(filename);
+    creep.setBlood(maxBlood);
+    creep.setCost(cost);
+    creep.setSpeed(speed);
+    return creep;
+};
+
+Creep.createFlying = function(maze, filename, maxBlood, cost, speed) {
+    var creep = new Creep(maze);
+    creep.init(filename);
+    creep.setBlood(maxBlood);
+    creep.setCost(cost);
+    creep.setSpeed(speed);
+    creep.setIsFlying(true);
+    return creep;
+};
+
 Creep.createLv = function( lv, maze ) {
-    if(lv == 0) return Creep.create(maze,s_Creep[0], 200,1);
-    if(lv == 1) return Creep.create(maze,s_Creep[1], 400,2);
-    if(lv == 2) return Creep.create(maze,s_Creep[2], 600,3);
-    if(lv == 3) return Creep.create(maze,s_Creep[3], 2000,4);
+    if(lv == 0) return Creep.create(maze,s_Creep[0], 150,1);
+    else if(lv == 1) return Creep.create(maze,s_Creep[1], 400,2);
+    else if(lv == 2) return Creep.create(maze,s_Creep[2], 600,2);
+    else if(lv == 3) return Creep.create(maze,s_Creep[3], 1000,3);
+    else if(lv == 4) return Creep.create(maze,s_Creep[4], 2000,3);
+    else if(lv == 5) return Creep.createHaste(maze,s_Creep[5], 1200,4,0.1);
+    else if(lv == 6) return Creep.create(maze,s_Creep[6], 4000,4);
+    else if(lv == 7) return Creep.create(maze,s_Creep[7], 5000,5);
+    else if(lv == 8) return Creep.create(maze,s_Creep[8], 7000,5);
+    else if(lv == 9) return Creep.create(maze,s_Creep[9], 8000,6);
+    else if(lv == 10) return Creep.createFlying(maze,s_Creep[10], 1200,7,10);
+    else if(lv == 11) return Creep.createFlying(maze,s_Creep[11], 2000,7,5);
 };

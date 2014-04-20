@@ -56,9 +56,17 @@ var GameLayer = cc.LayerColor.extend({
 
     initSpawner: function() {
         this.maxCreepInLv[0] = 25;
-        this.maxCreepInLv[1] = 30;
-        this.maxCreepInLv[2] = 35;
-        this.maxCreepInLv[3] = 40;
+        this.maxCreepInLv[1] = 25;
+        this.maxCreepInLv[2] = 25;
+        this.maxCreepInLv[3] = 25;
+        this.maxCreepInLv[4] = 25;
+        this.maxCreepInLv[5] = 8;
+        this.maxCreepInLv[6] = 20;
+        this.maxCreepInLv[7] = 20;
+        this.maxCreepInLv[8] = 20;
+        this.maxCreepInLv[9] = 20;
+        this.maxCreepInLv[10] = 10;
+        this.maxCreepInLv[11] = 10;
 
         this.creepNotSpawned = this.maxCreepInLv[0];
         this.maxCreepNow = this.maxCreepInLv[0];
@@ -217,7 +225,8 @@ var GameLayer = cc.LayerColor.extend({
         this.timerLabel.runAction(cc.FadeIn.create(0.2));
         this.battleInLabel.runAction(cc.FadeIn.create(0.2));
 
-        if(this.level == 4) {
+        var lastLevel = this.maxCreepInLv.length;
+        if(this.level == lastLevel ) {
             this.maze.isGameOver = true;
             this.maze.gameOver(true);
         }
