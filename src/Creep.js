@@ -259,11 +259,11 @@ Creep.createLv = function( lv, maze ) {
     else if(lv == 2) return Creep.create(maze,s_Creep[2], 600,2);
     else if(lv == 3) return Creep.create(maze,s_Creep[3], 1000,3);
     else if(lv == 4) return Creep.create(maze,s_Creep[4], 2000,3);
-    else if(lv == 5) return Creep.createHaste(maze,s_Creep[5], 1200,4,0.1);
-    else if(lv == 6) return Creep.create(maze,s_Creep[6], 4000,4);
-    else if(lv == 7) return Creep.create(maze,s_Creep[7], 5000,5);
-    else if(lv == 8) return Creep.create(maze,s_Creep[8], 7000,5);
-    else if(lv == 9) return Creep.create(maze,s_Creep[9], 8000,6);
-    else if(lv == 10) return Creep.createFlying(maze,s_Creep[10], 1200,7,10);
-    else if(lv == 11) return Creep.createFlying(maze,s_Creep[11], 2000,7,5);
+    else if(lv == 5) return Creep.createHaste(maze,s_Creep[5], 2500,4,0.1);
+    else if(lv == 6) return Creep.create(maze,s_Creep[6], 5000,4);
+    else if(lv == 7) return Creep.create(maze,s_Creep[7], 6000,5);
+    else if(lv == 8) return Creep.create(maze,s_Creep[8], 8000,5);
+    else if(lv == 9) return Creep.create(maze,s_Creep[9], 10000,6);
+    else if(lv == 10) return Creep.createFlying(maze,s_Creep[10], 4000,7,10);
+    else if(lv == 11) return Creep.createFlying(maze,s_Creep[11], 7000,7,5);
 };

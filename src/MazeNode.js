@@ -203,7 +203,6 @@ window.MazeNode = cc.Node.extend({
 		if(!block || block.blockType != "tower" || block.tower == null){
 			return false;
 		}
-		block.blockType = "ground";
 		var fadeOut = cc.FadeOut.create(0.2);
 
 		block.tower._sBall.runAction(cc.FadeOut.create(0.3));
@@ -213,6 +212,7 @@ window.MazeNode = cc.Node.extend({
                 this.removeChild(block.tower);					
 				block.tower.tower = null;
 				block.tower = null;
+				block.blockType = "ground";
             }, this)
         ));
 		this.rebuildMazeState();
