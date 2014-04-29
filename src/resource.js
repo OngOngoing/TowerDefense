@@ -1,3 +1,6 @@
+var s_menuBackground = "res/images/bg_menu.png";
+var s_logo = "res/images/logo.png";
+
 
 var s_Blood = "res/images/creep/Bloodred.png";
 var s_BloodBackground = "res/images/creep/BloodBackground.png";
@@ -62,6 +65,9 @@ var s_gameOver = "res/images/gameOver.png";
 
 var g_resources = [
     //image
+
+    {src:s_menuBackground},
+    {src:s_logo},
 
     {src:s_Blood},
     {src:s_BloodBackground},

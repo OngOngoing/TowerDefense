@@ -19,6 +19,13 @@ var cocos2dApp = cc.Application.extend({
 
         //cc.EGLView.getInstance()._adjustSizeToBrowser();
 
+        /*
+        var searchPaths = [];
+        searchPaths.push("res");
+        cc.FileUtils.getInstance().setSearchPaths(searchPaths);
+        */
+
+        
         // turn on display FPS
         director.setDisplayStats( this.config[ 'showFPS' ] );
 
@@ -26,11 +33,12 @@ var cocos2dApp = cc.Application.extend({
         director.setAnimationInterval( 1.0 / this.config[ 'frameRate' ] );
 
         cc.LoaderScene.preload(g_resources, function () {
-            director.replaceScene( new this.startScene() );
+            director.replaceScene(cc.TransitionFade.create(1.5, new this.startScene()));
+            //director.replaceScene( new this.startScene() );
         }, this );
         
         return true;
     }
 });
 
-var myApp = new cocos2dApp( GameLayer.scene );
+var myApp = new cocos2dApp( menuScene );

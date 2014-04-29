@@ -20,7 +20,8 @@
             'src/Creep.js',
             'src/Selector.js',
             'src/KeyboardControlLayer.js',
-            'src/GameOver.js',     //add your own files in order here
+            'src/GameOver.js',     
+            'src/menuScene.js',//add your own files in order here
         ]
     };
 
