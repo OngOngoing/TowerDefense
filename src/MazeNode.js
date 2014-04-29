@@ -13,7 +13,7 @@ window.MazeNode = cc.Node.extend({
 	'#                   #',
 	'#                   #',
 	'#####################',
-	'                    ',
+	'NNNNNNNNNNNNNNNNNNNNN',
 	],
 
 	sprite:  {
@@ -77,6 +77,11 @@ window.MazeNode = cc.Node.extend({
 				}else if(item == " "){
 					spriteName = "ground";
 					blockType = "ground";
+				}else if(item == "N") {
+					spriteName = "wall";
+					blockType = "wall";
+					return;
+
 				/*
 				}else if(item == "#" ) {
 					var animFrames = [];
