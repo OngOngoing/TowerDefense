@@ -218,9 +218,9 @@ window.MazeNode = cc.Node.extend({
 				block.tower.tower = null;
 				block.tower = null;
 				block.blockType = "ground";
+				this.rebuildMazeState();
             }, this)
         ));
-		this.rebuildMazeState();
 		return true;
 	},
 
