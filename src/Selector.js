@@ -23,6 +23,7 @@ window.Selector = cc.Sprite.extend({
 	update: function(){
 		var pos = this.getPosition();
 		var targetPos = pos;
+
 		if(this.direction == Selector.DIR.RIGHT){
 			targetPos = cc.p(pos.x + this.maze.tileSize.width, pos.y);
 			this.direction = null;
@@ -104,11 +105,11 @@ window.Selector = cc.Sprite.extend({
 			targetPos.x = 0;
 			this.setPosition(targetPos);
 		}
-		if(targetPos.y < 0){
-			targetPos.y = topSide;
+		if(targetPos.y < 0 + this.maze.tileSize.height){
+			targetPos.y = topSide - this.maze.tileSize.height;
 			this.setPosition(targetPos);
-		}else if(targetPos.y > topSide){
-			targetPos.y = 0;
+		}else if(targetPos.y > topSide-this.maze.tileSize.height){
+			targetPos.y = 0 + this.maze.tileSize.height;
 			this.setPosition(targetPos);
 		}
 		//this.setPosition(targetPos);
