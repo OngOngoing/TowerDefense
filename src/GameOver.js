@@ -20,7 +20,7 @@ var GameOver = cc.LayerColor.extend({
         this.runAction(cc.Sequence.create(
             cc.DelayTime.create(12.5),
             cc.CallFunc.create(function(node) {
-                var scene = GameLayer.scene();
+                var scene = menuScene.scene();
                 var gameTransition = cc.TransitionFade.create(1, scene);
                 cc.Director.getInstance().replaceScene(gameTransition);
             }, this)

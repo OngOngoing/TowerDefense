@@ -56,3 +56,17 @@ var menuScene = cc.Scene.extend({
         this.addChild(layer);
     }
 });
+
+menuScene.create = function () {
+    var sg = new MenuLayer();
+    sg.init();
+    return sg;
+};
+
+
+menuScene.scene = function () {
+    var scene = cc.Scene.create();
+    var layer = menuScene.create();
+    scene.addChild(layer);
+    return scene;
+};
