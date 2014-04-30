@@ -459,9 +459,9 @@ cc.LoaderScene = cc.Scene.extend(/** @lends cc.LoaderScene# */{
         this._label.setPosition(cc.pAdd(centerPos, cc.p(0, -logoHeight / 2 - 10)));
         this._bgLayer.addChild(this._label, 10);
 
-        //var audioEngine = cc.AudioEngine.getInstance();
-        //audioEngine.playMusic(s_music_loading, true);
-        //audioEngine.setMusicVolume(0.2);
+        var audioEngine = cc.AudioEngine.getInstance();
+        audioEngine.playMusic(s_loadingScene_mp3, true);
+        audioEngine.setMusicVolume(0.2);
         
     },
 

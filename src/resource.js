@@ -14,6 +14,7 @@ var s_MonsterDie_mp3 = "res/Music/effect/MonsterDie.mp3";
 
 var s_Battle1_mp3 = "res/Music/bgm/battle1.mp3";
 
+var s_loadingScene_mp3 = "res/Music/bgm/loadingSound.mp3";
 var s_endGame_mp3 = "res/Music/bgm/gameOver.mp3";
 
 var s_Creep = [
@@ -39,11 +40,6 @@ var s_Disk = [
 var s_Android = [
     "res/images/android/android.plist",
     "res/images/android/android.png",
-];
-
-var s_Tower = [
-    "res/images/tower.png",
-    "res/images/tower.png"
 ];
 
 var s_TowerBall = [
@@ -90,8 +86,6 @@ var g_resources = [
     {src:s_CombWall[0]},
     {src:s_CombWall[1]},
 
-    {src:s_Tower[0]},
-    {src:s_Tower[1]},
 
     {src:s_TowerBall[0]},
     {src:s_TowerBall[1]},
@@ -137,6 +131,7 @@ var g_resources = [
     //tmx
 
     //bgm
+    {src:s_loadingScene_mp3},
     {src:s_endGame_mp3},
     {src:s_Battle1_mp3},
 
