@@ -274,7 +274,7 @@ var Tower = cc.Layer.extend({
         highBullet.getSprite().runAction(action);
             
 
-        cc.AudioEngine.getInstance().playEffect(s_AttackHighEffect_mp3);
+        //cc.AudioEngine.getInstance().playEffect(s_AttackHighEffect_mp3);
     },
 
     createLowBullet: function ( creep ) {

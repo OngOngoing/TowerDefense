@@ -21,7 +21,6 @@ var MenuLayer = cc.Layer.extend({
         
         var logo = cc.Sprite.create(s_logo);
         logo.setPosition(cc.p(winsize.width / 2, winsize.height/2));
-        logo.setScale(0.7,0.7);
         this.addChild(logo, 1);
         
         var neonColor = cc.c3b(117, 248, 250)
