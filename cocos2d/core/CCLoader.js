@@ -477,7 +477,7 @@ cc.LoaderScene = cc.Scene.extend(/** @lends cc.LoaderScene# */{
 
     onEnter: function () {
         cc.Node.prototype.onEnter.call(this);
-        this.schedule(this._startLoading, 3);
+        this.schedule(this._startLoading, 0.3);
     },
 
     onExit: function () {
