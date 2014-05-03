@@ -461,7 +461,7 @@ cc.LoaderScene = cc.Scene.extend(/** @lends cc.LoaderScene# */{
 
         var audioEngine = cc.AudioEngine.getInstance();
         audioEngine.playMusic(s_loadingScene_mp3, true);
-        audioEngine.setMusicVolume(0.2);
+        audioEngine.setMusicVolume(0.5);
         
     },
 

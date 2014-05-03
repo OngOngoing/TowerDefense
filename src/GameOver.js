@@ -23,6 +23,9 @@ var GameOver = cc.LayerColor.extend({
                 var scene = menuScene.scene();
                 var gameTransition = cc.TransitionFade.create(1, scene);
                 cc.Director.getInstance().replaceScene(gameTransition);
+                var audioEngine = cc.AudioEngine.getInstance();
+                audioEngine.playMusic(s_loadingScene_mp3, true);
+                audioEngine.setMusicVolume(0.5);
             }, this)
         ));
  

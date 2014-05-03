@@ -77,7 +77,7 @@ var Creep = cc.Sprite.extend({
 
         var path = this.path.shift();
         var distance = cc.pDistance(this.getPosition(), this.maze.basePosition)
-        if(!path){
+        if(!path && !this._isFlying){
             if( distance <=10 ) {
                 console.log("Destination Reached!");
                 this.maze.isGameOver = true;
@@ -129,8 +129,10 @@ var Creep = cc.Sprite.extend({
         this.runAction(cc.Sequence.create(
             this.moveAction,
             cc.CallFunc.create(function () {
-                this.maze.isGameOver = true;
-                this.maze.gameOver(false);
+                if(!this.maze.isGameOver) {
+                    this.maze.isGameOver = true;
+                    this.maze.gameOver(false);
+                }
             }, this)
         ));
     },
