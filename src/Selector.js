@@ -20,9 +20,34 @@ window.Selector = cc.Sprite.extend({
 		this.scheduleUpdate();
 	},
 
+	checkWrapAround: function(targetPos) {
+		var pos = this.getPosition();
+		var targetPos = targetPos;
+
+		//var rightSide = this.getStageSize().width - this.maze.tileSize.width;
+		var rightSide = 1000;
+		var topSide = this.getStageSize().height - 2*this.maze.tileSize.height;
+		if(targetPos.x < 0){
+			targetPos.x = 0;
+			this.setPosition(targetPos);
+		}else if(targetPos.x > rightSide){
+			targetPos.x = rightSide;
+			this.setPosition(targetPos);
+		}
+		if(targetPos.y < 0 + this.maze.tileSize.height){
+			targetPos.y = this.maze.tileSize.height;
+			this.setPosition(targetPos);
+		}else if(targetPos.y > topSide){
+			targetPos.y = topSide;
+			this.setPosition(targetPos);
+		}
+	},
+
 	update: function(){
 		var pos = this.getPosition();
 		var targetPos = pos;
+
+		this.checkWrapAround(targetPos);
 
 		if(this.direction == Selector.DIR.RIGHT){
 			targetPos = cc.p(pos.x + this.maze.tileSize.width, pos.y);
@@ -96,22 +121,7 @@ window.Selector = cc.Sprite.extend({
 		}
 		
 		// wrap around
-		var rightSide = this.getStageSize().width - this.maze.tileSize.width;
-		var topSide = this.getStageSize().height - this.maze.tileSize.height;
-		if(targetPos.x < 0){
-			targetPos.x = rightSide;
-			this.setPosition(targetPos);
-		}else if(targetPos.x > rightSide){
-			targetPos.x = 0;
-			this.setPosition(targetPos);
-		}
-		if(targetPos.y < 0 + this.maze.tileSize.height){
-			targetPos.y = topSide - this.maze.tileSize.height;
-			this.setPosition(targetPos);
-		}else if(targetPos.y > topSide-this.maze.tileSize.height){
-			targetPos.y = 0 + this.maze.tileSize.height;
-			this.setPosition(targetPos);
-		}
+		this.checkWrapAround(targetPos);
 		//this.setPosition(targetPos);
 
 		this.MoveAction = cc.MoveTo.create(0.05, targetPos);
