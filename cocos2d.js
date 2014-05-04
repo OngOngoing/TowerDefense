@@ -21,7 +21,8 @@
             'src/Selector.js',
             'src/KeyboardControlLayer.js',
             'src/GameOver.js',     
-            'src/menuScene.js',//add your own files in order here
+            'src/menuScene.js',
+            'src/InformationLayer.js',//add your own files in order here
         ]
     };
 

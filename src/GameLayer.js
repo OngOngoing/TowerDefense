@@ -1,3 +1,5 @@
+var INFOLAYER_POS = new cc.p(1050,0);
+
 var GameLayer = cc.LayerColor.extend({
 
     color: new cc.Color4B(0, 0, 0, 255),
@@ -26,6 +28,11 @@ var GameLayer = cc.LayerColor.extend({
         this.maze = new MazeNode();
         this.maze.init(this);
         this.addChild( this.maze );
+
+        this.informationLayer = new InformationLayer();
+        this.informationLayer.init(this);
+        this.informationLayer.setPosition(INFOLAYER_POS);
+        this.addChild( this.informationLayer);
 
         this.energyCost = this.maze.energyCost;
 

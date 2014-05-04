@@ -32,6 +32,12 @@ var s_Creep = [
     "res/images/creep/jl.png",
 ];
 
+var s_TWSkills = [
+    "res/images/skills/Q.png",
+    "res/images/skills/W.png",
+
+];
+
 var s_Disk = [
     "res/images/tower/disk.plist",
     "res/images/tower/disk.png",
@@ -75,6 +81,10 @@ var g_resources = [
     {src:s_Creep[1]},
     {src:s_Creep[2]},
     {src:s_Creep[3]},
+
+    {src:s_TWSkills[0]},
+    {src:s_TWSkills[1]},
+
 
     {src:s_Disk[0]},
     {src:s_Disk[1]},
