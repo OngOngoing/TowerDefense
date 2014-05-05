@@ -106,6 +106,9 @@ var Tower = cc.Layer.extend({
     bulletLayer:null,
     bullet:null,
 
+    isFreezeBullet: false,
+    freezeConstant: 0,
+    freezeDuration: 0,
     creepList:[],
 
     tower:null,
@@ -144,6 +147,12 @@ var Tower = cc.Layer.extend({
         
         this.scheduleUpdate();
 
+    },
+
+    setFreeze: function(duration, constant) {
+        this.isFreezeBullet = true;
+        this.freezeDuration = duration;
+        this.freezeConstant = constant;
     },
 
     createBall: function( ballSprite ) {
@@ -295,6 +304,10 @@ var Tower = cc.Layer.extend({
         ));
         creep.lostBlood(this._attack);
 
+        if(this.isFreezeBullet) {
+            creep.Freeze(this.freezeDuration,this.freezeConstant);
+        }
+
 
         //sound
         //cc.AudioEngine.getInstance().playEffect(s_AttackEffect_mp3);    
@@ -358,7 +371,7 @@ var Tower = cc.Layer.extend({
 
 
 
-Tower.create = function (spriteValue, ball,attackRange , speed, attack,game) {
+Tower.create = function (spriteValue, ball,attackRange , speed, attack, game) {
     var tower = new Tower();
     tower.init(spriteValue, ball, attackRange, speed, attack,game);
     return tower;
@@ -392,8 +405,34 @@ Tower.createLow = function (game) {
 
 Tower.createHigh = function (game) {
     var cache = cc.SpriteFrameCache.getInstance();
+    cache.addSpriteFrames( s_Disk[0], s_Disk[1] );
+    var spriteValue = [];
+    // NAME TAG SPRITE
+    spriteValue.push("disk");
+
+    // Constructing SPRITE END
+    spriteValue.push(21);
+
+    // Active SPRITE END
+    spriteValue.push(34);
+
+    // Constructing time
+    spriteValue.push(0.05);
+
+    // Active animation time rate
+    spriteValue.push(0.08);
+
+    // Tower Construction : SpriteValue, ballSprite, AttackRange, SpeedDelay, Attack, GAME
+    var tower = Tower.create(spriteValue, s_TowerBall[1], 200, 1000, 200,game);
+    tower._bulletType = "high";
+    return tower;
+};
+
+Tower.createFreeze = function( game ) {
+    var cache = cc.SpriteFrameCache.getInstance();
     cache.addSpriteFrames( s_Android[0], s_Android[1] );
     var spriteValue = [];
+    
     // NAME TAG SPRITE
     spriteValue.push("android");
 
@@ -408,8 +447,10 @@ Tower.createHigh = function (game) {
 
     // Active animation time rate
     spriteValue.push(0.025);
+
     // Tower Construction : SpriteValue, ballSprite, AttackRange, SpeedDelay, Attack, GAME
-    var tower = Tower.create(spriteValue, s_TowerBall[1], 200, 1000, 200,game);
-    tower._bulletType = "high";
+    var tower = Tower.create(spriteValue, s_TowerBall[2], 200, 600, 30,game);
+    tower._bulletType = "low";
+    tower.setFreeze(5,1);
     return tower;
 };

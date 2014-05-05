@@ -83,24 +83,46 @@ window.Selector = cc.Sprite.extend({
 			}else if(blockType == "ground"){
 				console.log("ground");
 				this.maze.createAt(targetPos,"LOW");
+				this.game.informationLayer.pushSkill(0);
 			}
 			
-			this.direction = null;
+			this.direction = null;	
+		}
+
 
 		//CREATE HIGH
-		}else if(this.direction == Selector.CTRL.CREATE_HIGH){
+		else if(this.direction == Selector.CTRL.CREATE_HIGH){
 			var blockType = this.maze.getBlockAt(targetPos);
 			if(blockType == "tower" || blockType == "wall" || !blockType){
 				return;
 			}else if(blockType == "ground"){
 				console.log("ground");
 				this.maze.createAt(targetPos,"HIGH");
+				this.game.informationLayer.pushSkill(1);
 			}
 			
 			this.direction = null;
 
+		}
+
+		//CREATE FREEZE
+		else if(this.direction == Selector.CTRL.CREATE_FREEZE){
+			var blockType = this.maze.getBlockAt(targetPos);
+			if(blockType == "tower" || blockType == "wall" || !blockType){
+				return;
+			}else if(blockType == "ground"){
+				console.log("ground");
+				this.maze.createAt(targetPos,"FREEZE");
+				this.game.informationLayer.pushSkill(2);
+			}
+			
+			this.direction = null;
+
+		}
+
+
 		//TOGGLE to SHOW TOWER RANGE
-		}else if(this.direction == Selector.CTRL.SHOW_RANGE ){
+		else if(this.direction == Selector.CTRL.SHOW_RANGE ){
 			var block = this.maze._getBlockAt(targetPos);
 			if(block == undefined || block.blockType == "wall" || !block.blockType){
 				return;
@@ -116,7 +138,6 @@ window.Selector = cc.Sprite.extend({
 			}
 			
 			this.direction = null;
-
 
 		}
 		
@@ -149,6 +170,7 @@ window.Selector.DIR = {
 window.Selector.CTRL = {
 	"CREATE_LOW": 10,
 	"CREATE_HIGH":11,
+	"CREATE_FREEZE":12,
 	"DELETE": -1,
 	"UPGRADE": 50,
 	"SHOW_RANGE": 99,

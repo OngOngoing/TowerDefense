@@ -9,12 +9,14 @@ var Creep = cc.Sprite.extend({
 	_sBloodBackground:null,
 	_sAttackedRange:null,
     _isFlying:false,
+    _isSlowed:false,
     _cost:0,
     stack:0,
     prestack:0,
     maze:null,
 
 	timeStep: 0.4,
+    originalTimeStep: 0.4,
 	ctor: function(maze) {
 
 		this._super();
@@ -76,7 +78,7 @@ var Creep = cc.Sprite.extend({
         }
 
         var path = this.path.shift();
-        var distance = cc.pDistance(this.getPosition(), this.maze.basePosition)
+        var distance = cc.pDistance(this.getPosition(), this.maze.basePosition);
         if(!path && !this._isFlying){
             if( distance <=10 ) {
                 console.log("Destination Reached!");
@@ -136,12 +138,33 @@ var Creep = cc.Sprite.extend({
             }, this)
         ));
     },
+    Freeze: function(duration,slowValue) {
+        this._slowDuration = duration;
+        if(!this._isSlowed) {
+            this.schedule(this.countDownFreezeTime,1);
+            this._isSlowed = true;
+            this.timeStep += slowValue;
+            this._sprite.setColor(cc.c3b(102, 255, 255));
+        }
+        
+
+    },
+
+    countDownFreezeTime: function() {
+        this._slowDuration--;
+    },
 
 
 
 	update: function(){
 		if(!this.moveAction || this.moveAction.isDone()){
             this.updateMove();
+        }
+        if(this._slowDuration <= 0) {
+            this._isSlowed = false;
+            this.unschedule(this.countDownFreezeTime);
+            this.timeStep = this.originalTimeStep;
+            this._sprite.setColor(cc.c3b(255, 255, 255));
         }
 	},
 
@@ -197,6 +220,7 @@ var Creep = cc.Sprite.extend({
     },
     setSpeed: function(value) {
         this.timeStep = value;
+        this.originalTimeStep = value;
     },
 
     destinationBlockedStack: function() {

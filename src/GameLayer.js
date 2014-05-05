@@ -264,6 +264,7 @@ var GameLayer = cc.LayerColor.extend({
             right: Selector.DIR.RIGHT,
             createLow: Selector.CTRL.CREATE_LOW,
             createHigh: Selector.CTRL.CREATE_HIGH,
+            createFreeze: Selector.CTRL.CREATE_FREEZE,
             del: Selector.CTRL.DELETE,
             upgrade: Selector.CTRL.UPGRADE,
             show_range: Selector.CTRL.SHOW_RANGE,

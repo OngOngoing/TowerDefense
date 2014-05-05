@@ -19,7 +19,7 @@ var InformationLayer = cc.LayerColor.extend({
         var director = cc.Director.getInstance();
         var winSize = director.getWinSize();
 
-        for(var i=0 ; i< 2; i++) {
+        for(var i=0 ; i< 3; i++) {
             this._skills[i] = cc.Sprite.create(s_TWSkills[i]);
             this._skills[i].setAnchorPoint(0, 0);
             this._skills[i].setPosition(0,winSize.height-150-(i*100));
@@ -40,6 +40,13 @@ var InformationLayer = cc.LayerColor.extend({
         
         energyLabel.enableStroke(neonDarkColor,1);
         this.addChild(energyLabel);
+    },
+    pushSkill: function(index) {
+        var fadeIn = cc.FadeIn.create(0.1);
+        var fadeOut = cc.FadeOut.create(0.1);
+        var delay = cc.DelayTime.create(0.1);
+        this._skills[index].runAction(cc.Sequence.create(fadeOut, delay, fadeIn));
+
     },
 
     getStageSize: function(){

@@ -6,6 +6,7 @@ var s_Blood = "res/images/creep/Bloodred.png";
 var s_BloodBackground = "res/images/creep/BloodBackground.png";
 var s_Bullet = "res/images/Shell.png";
 var s_HighBullet = "res/images/HighShell.png";
+var s_FreezeBullet = "res/images/FreezeShell.png";
 var s_AttackRange = "res/images/range.png";
 
 var s_AttackEffect_mp3 = "res/Music/effect/AttackEffect.mp3";
@@ -35,6 +36,7 @@ var s_Creep = [
 var s_TWSkills = [
     "res/images/skills/Q.png",
     "res/images/skills/W.png",
+    "res/images/skills/E.png",
 
 ];
 
@@ -50,7 +52,8 @@ var s_Android = [
 
 var s_TowerBall = [
     "res/images/Tower-ball-1.png",
-    "res/images/Tower-ball-2.png"
+    "res/images/Tower-ball-2.png",
+    "res/images/Tower-ball-3.png",
 ];
 
 var s_CombWall = [
@@ -75,6 +78,7 @@ var g_resources = [
     {src:s_BloodBackground},
     {src:s_Bullet},
     {src:s_HighBullet},
+    {src:s_FreezeBullet},
     {src:s_AttackRange},
 
     {src:s_Creep[0]},
@@ -84,6 +88,7 @@ var g_resources = [
 
     {src:s_TWSkills[0]},
     {src:s_TWSkills[1]},
+    {src:s_TWSkills[2]},
 
 
     {src:s_Disk[0]},
@@ -99,6 +104,7 @@ var g_resources = [
 
     {src:s_TowerBall[0]},
     {src:s_TowerBall[1]},
+    {src:s_TowerBall[2]},
 
     {src:s_Wall},
 
