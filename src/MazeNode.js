@@ -189,9 +189,9 @@ window.MazeNode = cc.Node.extend({
 			block.tower = Tower.createHigh(this.game);
 			this.energyCost -= 40;
 		}
-		else if(this.energyCost >= 20 && towerType == "FREEZE") {
+		else if(this.energyCost >= 50 && towerType == "FREEZE") {
 			block.tower = Tower.createFreeze(this.game);
-			this.energyCost -= 20;
+			this.energyCost -= 50;
 		}
 		else {
 			console.log("Insufficient Funds!");
