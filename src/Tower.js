@@ -168,7 +168,8 @@ var SplashBullet = cc.Node.extend({
         this._atkCreeps.push(creep);
     },
 
-    splash: function(creep) {
+    splash: function() {
+        var creep = this._target;
         creep.lostBlood(this._attack);
 
         if(this.isFreezeBullet) {
@@ -439,7 +440,7 @@ var Tower = cc.Layer.extend({
         splashBullet.getSprite().runAction(cc.Sequence.create(
             move,
             cc.CallFunc.create(function () {
-                splashBullet.splash(creep);
+                splashBullet.splash();
                 splashBullet.removeFromParent();
             }, splashBullet)
         ));
