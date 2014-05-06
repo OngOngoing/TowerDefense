@@ -59,12 +59,17 @@ var HighBullet = cc.Node.extend({
         creep.lostBlood(this._attack);
         this._atkCreeps.push(creep);
     },
+    
     update:function (dt) {
         var curT = (new Date()).valueOf();
         if (curT - this._initTime >= this._lifeTime * 1000) {
             // cc.log("bullet die");
             this.removeFromParent();
         }
+        else if ( this._sprite.getPosition().x >= 1050 || this._sprite.getPosition().y >= 700) {
+            this.removeFromParent();
+        }
+
         if (this._sAttackRange) {
             this._sAttackRange.setPosition(this._sprite.getPosition());
         }
