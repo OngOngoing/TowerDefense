@@ -59,7 +59,7 @@ var HighBullet = cc.Node.extend({
         creep.lostBlood(this._attack);
         this._atkCreeps.push(creep);
     },
-    
+
     update:function (dt) {
         var curT = (new Date()).valueOf();
         if (curT - this._initTime >= this._lifeTime * 1000) {
@@ -496,9 +496,11 @@ var Tower = cc.Layer.extend({
         if (value) {
             if (!this._sAttackRange) {
                 this._sAttackRange = cc.Sprite.create(s_AttackRange);
-                this._sAttackRange.setPosition(25,25);
+                //this._sAttackRange.setPosition(25,25)
+                var posInGame = cc.p(this.getPosition().x+25,this.getPosition().y+25);
+                this._sAttackRange.setPosition(posInGame);
                 this._sAttackRange.setOpacity(0);
-                this.addChild(this._sAttackRange, +100);
+                this._gameLayer.addChild(this._sAttackRange, +100);
             }
 
             var fadeIn = cc.FadeIn.create(0.2);
