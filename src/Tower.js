@@ -95,6 +95,7 @@ var SplashBullet = cc.Node.extend({
 
     _sprite:null,
     _attack:null,
+    _target:null,
 
     _atkCreeps:null,
     _creepList:null,
@@ -107,7 +108,7 @@ var SplashBullet = cc.Node.extend({
         this._attack = attack;
         this.schedule(this.update, 0);
 
-        this.radius = this._attackRange = 50;
+        this.radius = this._attackRange = 20;
         this._atkCreeps = [];
         this._creepList = creepList;
     },
@@ -126,6 +127,9 @@ var SplashBullet = cc.Node.extend({
     },
     setLifeTime:function (dt) {
         this._lifeTime = dt;
+    },
+    setTarget: function (creep) {
+        this._target = creep;
     },
     checkAttack:function (creep) {
         if (!creep) {
@@ -149,32 +153,41 @@ var SplashBullet = cc.Node.extend({
     attackCreep:function (creep) {
         // check attacked
 
-        console.log("ATTACKED");
         for (var i = 0, len = this._atkCreeps.length; i < len; i++) {
             if (this._atkCreeps[i] == creep)
                 return;
         }
 
-        list = this._creepList;
-
-        for (var j = 0, jLen = list.length; j < jLen; j++) {
-            var distance = cc.pDistance( creep.getSpritePos(), list[j].getSpritePos() );
-            if(distance <= 30) {
-                list[j].lostBlood(this._attack/3);
-
-                if(this.isFreezeBullet) {
-                    list[j].Freeze(this.freezeDuration/3,this.freezeConstant/2);
-                }
-            }
-        }
         // was attacked
+        creep.lostBlood(this._attack/5);
+
+        if(this.isFreezeBullet) {
+            creep.Freeze(this.freezeDuration/3,this.freezeConstant/3);
+        }
+
+        this._atkCreeps.push(creep);
+    },
+
+    splash: function(creep) {
         creep.lostBlood(this._attack);
 
         if(this.isFreezeBullet) {
             creep.Freeze(this.freezeDuration,this.freezeConstant);
         }
 
-        this._atkCreeps.push(creep);
+        list = this._creepList;
+
+        for (var j = 0, jLen = list.length; j < jLen; j++) {
+            var distance = cc.pDistance( creep.getSpritePos(), list[j].getSpritePos());
+            if(distance <= 30 && list[j] != creep) {
+                list[j].lostBlood(this._attack/3);
+                this._atkCreeps.push(list[j]);
+
+                if(this.isFreezeBullet) {
+                    list[j].Freeze(this.freezeDuration/2,this.freezeConstant/2);
+                }
+            }
+        }
     },
     update:function (dt) {
         var curT = (new Date()).valueOf();
@@ -195,10 +208,10 @@ var SplashBullet = cc.Node.extend({
     }
 });
 
-SplashBullet.create = function (attack,creepList) {
+SplashBullet.create = function (attack,creepList,creep) {
     var splashBullet = new SplashBullet();
     splashBullet.init(s_FreezeBullet, attack, creepList);
-    splashBullet.setFreeze(5,1);
+    splashBullet.setTarget(creep);
     return splashBullet;
 };
 
@@ -408,10 +421,12 @@ var Tower = cc.Layer.extend({
     },
 
     createSplashBullet: function(creep) {
-        var splashBullet = SplashBullet.create(this._attack,this.creepList);
+        var splashBullet = SplashBullet.create(this._attack,this.creepList,creep);
         splashBullet.getSprite().setPosition(
             cc.pAdd(this.getPosition(),
                 this._sBall.getPosition()));
+
+        splashBullet.setFreeze(this.freezeDuration, this.freezeConstant);
 
         splashBullet.checkAttack(creep);
         this._gameLayer.addChild(splashBullet);
@@ -424,6 +439,7 @@ var Tower = cc.Layer.extend({
         splashBullet.getSprite().runAction(cc.Sequence.create(
             move,
             cc.CallFunc.create(function () {
+                splashBullet.splash(creep);
                 splashBullet.removeFromParent();
             }, splashBullet)
         ));
@@ -601,6 +617,6 @@ Tower.createFreeze = function( game ) {
     // Tower Construction : SpriteValue, ballSprite, AttackRange, SpeedDelay, Attack, GAME
     var tower = Tower.create(spriteValue, s_TowerBall[2], 200, 600, 30,game);
     tower._bulletType = "splash";
-    tower.setFreeze(5,1);
+    tower.setFreeze(3,0.5);
     return tower;
 };
