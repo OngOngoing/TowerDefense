@@ -65,11 +65,13 @@ window.Selector = cc.Sprite.extend({
 
 		// REMOVE
 		}else if(this.direction == Selector.CTRL.DELETE){
+			this.game.informationLayer.pushSkill(4);
 			var blockType = this.maze.getBlockAt(targetPos);
 			if(blockType == "wall" || !blockType){
 				return;
 			}else if(blockType == "tower"){
 				this.maze.removeAt(targetPos);
+
 			}
 			
 			this.direction = null;
@@ -77,13 +79,14 @@ window.Selector = cc.Sprite.extend({
 		
 		//CREATE LOW
 		}else if(this.direction == Selector.CTRL.CREATE_LOW){
+			this.game.informationLayer.pushSkill(0);
 			var blockType = this.maze.getBlockAt(targetPos);
 			if(blockType == "tower" || blockType == "wall" || !blockType){
 				return;
 			}else if(blockType == "ground"){
 				console.log("ground");
 				this.maze.createAt(targetPos,"LOW");
-				this.game.informationLayer.pushSkill(0);
+				
 			}
 			
 			this.direction = null;	
@@ -92,13 +95,14 @@ window.Selector = cc.Sprite.extend({
 
 		//CREATE HIGH
 		else if(this.direction == Selector.CTRL.CREATE_HIGH){
+			this.game.informationLayer.pushSkill(1);
 			var blockType = this.maze.getBlockAt(targetPos);
 			if(blockType == "tower" || blockType == "wall" || !blockType){
 				return;
 			}else if(blockType == "ground"){
 				console.log("ground");
 				this.maze.createAt(targetPos,"HIGH");
-				this.game.informationLayer.pushSkill(1);
+				
 			}
 			
 			this.direction = null;
@@ -107,13 +111,14 @@ window.Selector = cc.Sprite.extend({
 
 		//CREATE FREEZE
 		else if(this.direction == Selector.CTRL.CREATE_FREEZE){
+			this.game.informationLayer.pushSkill(2);
 			var blockType = this.maze.getBlockAt(targetPos);
 			if(blockType == "tower" || blockType == "wall" || !blockType){
 				return;
 			}else if(blockType == "ground"){
 				console.log("ground");
 				this.maze.createAt(targetPos,"FREEZE");
-				this.game.informationLayer.pushSkill(2);
+				
 			}
 			
 			this.direction = null;
@@ -123,13 +128,15 @@ window.Selector = cc.Sprite.extend({
 
 		//TOGGLE to SHOW TOWER RANGE
 		else if(this.direction == Selector.CTRL.SHOW_RANGE ){
-			var block = this.maze._getBlockAt(targetPos);
+			this.game.informationLayer.pushSkill(3);
+			var block = this.maze._getBlockAt(targetPos);	
 			if(block == undefined || block.blockType == "wall" || !block.blockType){
 				return;
 			}else if(block.blockType == "tower"){
 				if(block.tower.isShowRange == false) {
 					block.tower.isShowRange = true;
 					block.tower.showRange(true);
+					
 				}
 				else {
 					block.tower.isShowRange = false;

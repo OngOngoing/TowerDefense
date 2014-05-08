@@ -106,7 +106,6 @@ var Creep = cc.Sprite.extend({
             var movePath = this.maze.toGamePos(cc.p(path[0], path[1]));
             this.moveAction = cc.MoveTo.create(this.timeStep, movePath);
             
-            this.stopAllActions();
             this.runAction(this.moveAction);
         }
 

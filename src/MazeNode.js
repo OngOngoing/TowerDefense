@@ -213,7 +213,7 @@ window.MazeNode = cc.Node.extend({
 			return false;
 		}
 		var fadeOut = cc.FadeOut.create(0.2);
-
+		this.energyCost += block.tower.sellPrice;
 		block.tower._sBall.runAction(cc.FadeOut.create(0.3));
         block.tower.tower.runAction(cc.Sequence.create(
             fadeOut,

@@ -19,7 +19,7 @@ var InformationLayer = cc.LayerColor.extend({
         var director = cc.Director.getInstance();
         var winSize = director.getWinSize();
 
-        for(var i=0 ; i< 3; i++) {
+        for(var i=0 ; i< 5; i++) {
             this._skills[i] = cc.Sprite.create(s_TWSkills[i]);
             this._skills[i].setAnchorPoint(0, 0);
             this._skills[i].setPosition(0,winSize.height-150-(i*100));

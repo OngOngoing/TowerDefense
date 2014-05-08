@@ -253,6 +253,9 @@ var Tower = cc.Layer.extend({
 
     spriteID:[],
 
+    sellPrice:0,
+    cost:0,
+
 
     init:function (spriteID, ball, attackRange, speed, attack, game) {
         this._super();
@@ -574,6 +577,8 @@ Tower.createLow = function (game) {
     // Tower Construction : SpriteValue, ballSprite, AttackRange, SpeedDelay, Attack, GAME
     var tower = Tower.create(spriteValue, s_TowerBall[0], 200, 300, 20,game);
     tower._bulletType = "low";
+    tower.cost = 5;
+    tower.sellPrice = 1;
     return tower;
 };
 
@@ -599,6 +604,8 @@ Tower.createHigh = function (game) {
     // Tower Construction : SpriteValue, ballSprite, AttackRange, SpeedDelay, Attack, GAME
     var tower = Tower.create(spriteValue, s_TowerBall[1], 200, 1000, 200,game);
     tower._bulletType = "high";
+    tower.cost = 40;
+    tower.sellPrice = 8;
     return tower;
 };
 
@@ -625,6 +632,8 @@ Tower.createFreeze = function( game ) {
     // Tower Construction : SpriteValue, ballSprite, AttackRange, SpeedDelay, Attack, GAME
     var tower = Tower.create(spriteValue, s_TowerBall[2], 200, 600, 30,game);
     tower._bulletType = "splash";
+    tower.cost = 50;
+    tower.sellPrice = 10;
     tower.setFreeze(3,0.5);
     return tower;
 };

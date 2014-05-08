@@ -37,6 +37,8 @@ var s_TWSkills = [
     "res/images/skills/Q.png",
     "res/images/skills/W.png",
     "res/images/skills/E.png",
+    "res/images/skills/R.png",
+    "res/images/skills/D.png",
 
 ];
 
@@ -89,6 +91,8 @@ var g_resources = [
     {src:s_TWSkills[0]},
     {src:s_TWSkills[1]},
     {src:s_TWSkills[2]},
+    {src:s_TWSkills[3]},
+    {src:s_TWSkills[4]},
 
 
     {src:s_Disk[0]},
